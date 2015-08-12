@@ -9,7 +9,7 @@ with open(path.join(here, 'README.md'), encoding='utf-8') as f:
 
 setup(
     name='NodeFinderGUI',
-    version='0.4.1',
+    version='0.4.2',
     description=('GUI Tool for node related operations in '
                  'phylogenetic analyses.'),
     author='Haofei Jin',
