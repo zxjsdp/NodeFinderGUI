@@ -3,14 +3,6 @@
 
 """
 NodeFinder: Do calibration or add Branch Label or add Clade Label.
-
-
-[ Change Log ]
-
-v0.4.1  (2015-07-20)
--------------------
-- First Public Release.
-- Fixed Python 3 support.
 """
 
 from __future__ import (with_statement, print_function)
@@ -36,7 +28,7 @@ else:
     raise ImportError('Cannot identify your Python version.')
 
 
-__version__ = '0.4.1'
+__version__ = '0.4.2'
 __author__ = 'Jin'
 
 GUI_TITLE = "NodeFinder GUI"
