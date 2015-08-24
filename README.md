@@ -18,7 +18,7 @@ usage and other information.
 
 Command Line Version
 --------------------
-[NodeFinderGUI](https://github.com/zxjsdp/NodeFinderGUI)
+[NodeFinder](https://github.com/zxjsdp/NodeFinder)
 
 
 Screenshot
