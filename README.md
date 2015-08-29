@@ -74,3 +74,22 @@ Output log:
     [Insert]:                    ->||<-                  
     [Insert]:                  Insert Here               
     ----------------------------------------------------
+
+
+Implementation
+--------------
+
+Given two species, this program finds all ancestor nodes for each species by
+using stack (to exclude other monophyletic group) and parenthesis. Then compare
+these two ancestor node list and find the index of most recent common
+ancestor nodes. 
+
+For example:
+
+    List of ancestor nodes index:
+    species1:     [57, 62, 73, 102, 162, 214, 258]
+                                ^    ^    ^    ^
+                                |    |    |    |
+    species2: [39, 48, 81, 94, 102, 162, 214, 258]
+
+    Then 102 will be the index of most recent common ancestor node.
