@@ -6,6 +6,15 @@ Next Release
 
 Will be released in the near future...
 
+Version v0.4.3
+--------------
+
+Improvement:
+- Remove unnecessary logic, improve performance
+
+Bugfix:
+- Fix save as button for outcome and log
+
 Version v0.4.2
 --------------
 
