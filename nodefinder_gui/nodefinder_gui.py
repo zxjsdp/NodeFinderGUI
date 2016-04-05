@@ -33,8 +33,8 @@ __author__ = 'Jin'
 
 GUI_TITLE = "NodeFinder GUI"
 INIT_WINDOW_SIZE = '1200x700'
-THIN_BAR = '~' * 60
-LONG_BAR = '=' * 60
+THIN_BAR = '~' * 50
+LONG_BAR = '=' * 50
 
 # Use set(list()) for Python2.6 compatibility
 NONE_TREE_NAME_SYMBOL_SET = set(
@@ -294,38 +294,40 @@ class App(tk.Frame):
         self.row_and_column_configure()
         self.create_right_menu()
         self.bind_func()
-        self.configure_display_info()
+        self.display_info()
 
     def set_style(self):
         """Set custom style for widget."""
         s = ttk.Style()
 
         # Configure button style
-        s.configure('TButton', padding=(5))
+        s.configure('TButton', padding=5)
         s.configure(
             'execute.TButton',
             foreground='red',
             )
         s.configure(
             'newline.TButton',
-            padding=(6)),
+            padding=6),
         s.configure(
             'clear.TButton',
             foreground='#2AA198',
             )
 
         # Configure Combobox style
-        s.configure('TCombobox', padding=(6))
-        s.configure('config.TCombobox')
+        s.configure('TCombobox', padding=6)
+        s.configure('config.TCombobox',)
 
         # Configure Title Frame
         s.configure(
             'title.TLabel',
-            padding=(10),
+            padding=10,
             font=('helvetica', 11, 'bold'),
             )
         s.configure(
             'config.TLabel',
+            padding=1,
+            font=('arial', 9),
             )
 
     def create_widgets(self):
@@ -425,6 +427,16 @@ class App(tk.Frame):
             style='clear.TButton',
             )
 
+        self.read_config_file_button = ttk.Button(
+            self.config_pane,
+            text='Read Config File...',
+        )
+
+        self.save_config_to_file_button = ttk.Button(
+            self.config_pane,
+            text='Save Config to File...',
+        )
+
         self.name_a_label = ttk.Label(
             self.config_pane, text='Name A', style='config.TLabel')
 
@@ -450,7 +462,7 @@ class App(tk.Frame):
             self.config_pane, style='config.TCombobox')
 
         self.config_lines_area = st.ScrolledText(
-            self.config_pane, height=17)
+            self.config_pane,)
 
         # +-------------------+-------------------+
         # |                   |                   |
@@ -567,9 +579,11 @@ class App(tk.Frame):
         self.config_label.grid(row=0, column=0, sticky='w')
         self.execute_button.grid(row=0, column=2, sticky='we')
         self.clear_config_area_button.grid(row=0, column=3, sticky='we')
-        self.name_a_label.grid(row=2, column=1, sticky='w')
-        self.name_b_label.grid(row=2, column=2, sticky='w')
-        self.info_label.grid(row=2, column=3, sticky='w')
+        self.read_config_file_button.grid(row=1, column=2, sticky='we')
+        self.save_config_to_file_button.grid(row=1, column=3, sticky='we')
+        self.name_a_label.grid(row=2, column=1, sticky='ws')
+        self.name_b_label.grid(row=2, column=2, sticky='ws')
+        self.info_label.grid(row=2, column=3, sticky='ws')
         self.add_newline_button.grid(row=3, column=0, sticky='we')
         self.name_a_combobox.grid(row=3, column=1, sticky='we')
         self.name_b_combobox.grid(row=3, column=2, sticky='we')
@@ -624,6 +638,7 @@ class App(tk.Frame):
         self.config_pane.rowconfigure(1, weight=0)
         self.config_pane.rowconfigure(2, weight=0)
         self.config_pane.rowconfigure(3, weight=0)
+        self.config_pane.rowconfigure(4, weight=1)
         self.config_pane.columnconfigure(0, weight=0)
         self.config_pane.columnconfigure(1, weight=1)
         self.config_pane.columnconfigure(2, weight=1)
@@ -680,6 +695,8 @@ class App(tk.Frame):
         # config_pane
         self.clear_config_area_button['command'] = lambda: \
             self.config_lines_area.delete('1.0', 'end')
+        self.read_config_file_button['command'] = self._read_config_from_file
+        self.save_config_to_file_button['command'] = self._save_config_to_file
         self.add_newline_button['command'] = self._set_value_to_textarea
         self.execute_button['command'] = self._main_work
 
@@ -695,14 +712,14 @@ class App(tk.Frame):
         self.save_log_button['command'] = self._ask_save_log_as_file
         self.clear_log_button['command'] = self._clear_log
 
-    def configure_display_info(self):
+    def display_info(self):
         # Output
         sys.stdout = TextEmit(self.log_area, 'stdout')
         sys.stderr = TextEmit(self.log_area, 'stderr')
 
         print(LONG_BAR)
-        print('    %s  (%s)' % (GUI_TITLE, __version__))
-        print(time.strftime("    %d %b %Y, %a  %H:%M:%S",
+        print('  %s (Ver %s)' % (GUI_TITLE, __version__))
+        print(time.strftime("  %d %b %Y,  %a %H:%M:%S",
                             time.localtime()))
         print(LONG_BAR)
 
@@ -739,6 +756,32 @@ class App(tk.Frame):
             self.tree_paste_area.delete('1.0', 'end')
             self.tree_paste_area.insert('end', content)
             print('[ INFO | %s ] Load file' % time_now())
+
+    def _read_config_from_file(self):
+        """Read calibration config from file"""
+        file_opt = {}
+        c = tkFileDialog.askopenfile(mode='r', **file_opt)
+        if c is None:
+            # No file selected
+            return
+        config_content = c.read()
+        self.config_lines_area.delete('1.0', 'end')
+        self.config_lines_area.insert('end', config_content)
+
+        abs_path = c.name
+        base_name = os.path.basename(abs_path)
+        print('[ INFO | %s ] Read from config file: %s' %
+              (time_now(), base_name))
+
+    def _save_config_to_file(self):
+        """Save current calibration config content to file"""
+        f = tkFileDialog.asksaveasfile(mode='w', defaultextension=".txt")
+        # asksaveasfile return `None` if dialog closed with "cancel".
+        if f is None:
+            return
+        text_to_save = str(self.config_lines_area.get('1.0', 'end-1c'))
+        f.write(text_to_save)
+        f.close()
 
     def _set_value_to_textarea(self):
         """Value to textarea."""
