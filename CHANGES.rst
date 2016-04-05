@@ -9,6 +9,12 @@ Will be released in the near future...
 Version v0.4.3
 --------------
 
+Feature:
+- Add right click menu for most of the text are
+
+Version v0.4.3
+--------------
+
 Improvement:
 - Remove unnecessary logic, improve performance
 
