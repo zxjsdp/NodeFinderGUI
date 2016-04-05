@@ -379,6 +379,8 @@ class App(tk.Frame):
         self.choose_tree_box = ttk.Combobox(self.tree_pane,
                                             textvariable=self.tree_name)
         self.choose_tree_box.grid(row=1, column=0, columnspan=2, sticky='we')
+        right_menu_tree_choose = RightClickMenu(self.choose_tree_box)
+        self.choose_tree_box.bind('<Button-3>', right_menu_tree_choose)
 
         self.load_history_button = ttk.Button(
             self.tree_pane,
@@ -390,6 +392,8 @@ class App(tk.Frame):
             self.tree_pane)
         self.tree_paste_area.grid(
             row=2, column=0, columnspan=3, sticky='wens')
+        right_menu_input = RightClickMenuForScrolledText(self.tree_paste_area)
+        self.tree_paste_area.bind('<Button-3>', right_menu_input)
 
         def ask_open_file():
             """Dialog to open file."""
@@ -488,10 +492,20 @@ class App(tk.Frame):
             self.config_pane, style='config.TCombobox')
         self.info_combobox.grid(row=3, column=3, sticky='we')
 
+        right_menu_name_a = RightClickMenu(self.name_a_combobox)
+        self.name_a_combobox.bind('<Button-3>', right_menu_name_a)
+        right_menu_name_b = RightClickMenu(self.name_b_combobox)
+        self.name_b_combobox.bind('<Button-3>', right_menu_name_b)
+        right_menu_info_combobox = RightClickMenu(self.info_combobox)
+        self.info_combobox.bind('<Button-3>', right_menu_info_combobox)
+
         self.config_lines_area = st.ScrolledText(
             self.config_pane, height=17)
         self.config_lines_area.grid(
             row=4, column=0, columnspan=4, sticky='wens')
+
+        right_menu_config = RightClickMenuForScrolledText(self.config_lines_area)
+        self.config_lines_area.bind('<Button-3>', right_menu_config)
 
         self.clear_config_area_button['command'] = lambda: \
             self.config_lines_area.delete('1.0', 'end')
@@ -626,6 +640,9 @@ class App(tk.Frame):
         self.out_tree_area = st.ScrolledText(self.out_tree_pane, bg='#FAFAFA')
         self.out_tree_area.grid(
             row=1, column=0, columnspan=5, sticky='wens')
+
+        right_menu_out = RightClickMenuForScrolledText(self.out_tree_area)
+        self.out_tree_area.bind('<Button-3>', right_menu_out)
 
         self.clear_out_tree_button['command'] = \
             lambda: self.out_tree_area.delete('1.0', 'end')
