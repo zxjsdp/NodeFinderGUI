@@ -288,6 +288,7 @@ class App(tk.Frame):
         self.combo_line_count = 0
 
         # GUI creating
+        self.create_menu_bar()
         self.set_style()
         self.create_widgets()
         self.configure_grid()
@@ -295,6 +296,62 @@ class App(tk.Frame):
         self.create_right_menu()
         self.bind_func()
         self.display_info()
+
+    def create_menu_bar(self):
+        """Create Menu Bar for NodeFinderGUI"""
+        menu_bar = tk.Menu(self.master)
+
+        # File Menu
+        file_menu = tk.Menu(menu_bar, tearoff=0)
+        file_menu.add_command(label='Open input tree file...',
+                              command=self.hello)
+        file_menu.add_separator()
+        file_menu.add_command(label='Save output tree to file...',
+                              command=self.hello)
+        file_menu.add_separator()
+        file_menu.add_command(label='Exit', command=self.quit)
+        menu_bar.add_cascade(label='File', menu=file_menu)
+
+        # Configure Menu
+        configs_menu = tk.Menu(menu_bar, tearoff=0)
+        configs_menu.add_command(label='Open config file...',
+                                 command=self.hello)
+        configs_menu.add_command(label='Save config to file...',
+                                 command=self.hello)
+        menu_bar.add_cascade(label="Configs", menu=configs_menu)
+
+        # Edit Menu
+        edit_menu = tk.Menu(menu_bar, tearoff=0)
+        edit_menu.add_command(label="Cut", command=self.hello)
+        edit_menu.add_command(label="Copy", command=self.hello)
+        edit_menu.add_command(label="Paste", command=self.hello)
+        edit_menu.add_separator()
+        edit_menu.add_command(label='Select All  (Input Area)',
+                              command=self.hello)
+        edit_menu.add_command(label='Clear All    (Input Area)',
+                              command=self.hello)
+        edit_menu.add_separator()
+        edit_menu.add_command(label='Select All  (Config Area)',
+                              command=self.hello)
+        edit_menu.add_command(label='Clear All    (Config Area)',
+                              command=self.hello)
+        edit_menu.add_separator()
+        edit_menu.add_command(label='Select All  (Output Area)',
+                              command=self.hello)
+        edit_menu.add_command(label='Clear All    (Output Area)',
+                              command=self.hello)
+        menu_bar.add_cascade(label="Edit", menu=edit_menu)
+
+        # Help Menu
+        help_menu = tk.Menu(menu_bar, tearoff=0)
+        help_menu.add_command(label="Documentation", command=self.hello)
+        help_menu.add_command(label="About", command=self.hello)
+        menu_bar.add_cascade(label="Help", menu=help_menu)
+
+        self.master.config(menu=menu_bar)
+
+    def hello(self):
+        print('hello menubar')
 
     def set_style(self):
         """Set custom style for widget."""
