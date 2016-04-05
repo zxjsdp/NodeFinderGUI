@@ -398,15 +398,30 @@ class App(tk.Frame):
             command=save_new_tree_to_current_dir)
         self.save_current_dir_button.grid(row=0, column=2, sticky='we')
 
-        # Save as button
-        def ask_save_as_file(**file_opt):
+        # Save as button for outcome
+        def ask_save_out_as_file():
             """Dialog to save as file."""
-            return tkFileDialog.asksaveasfile(mode='w', **file_opt)
+            f = tkFileDialog.asksaveasfile(mode='w', defaultextension=".txt")
+            if f is None: # asksaveasfile return `None` if dialog closed with "cancel".
+                return
+            text_to_save = str(self.out_tree_area.get('1.0', 'end-1c'))
+            f.write(text_to_save)
+            f.close() # `()` was missing.
+
+        # Save as button for log
+        def ask_save_log_as_file():
+            """Dialog to save as file."""
+            f = tkFileDialog.asksaveasfile(mode='w', defaultextension=".txt")
+            if f is None: # asksaveasfile return `None` if dialog closed with "cancel".
+                return
+            text_to_save = str(self.log_area.get('1.0', 'end-1c'))
+            f.write(text_to_save)
+            f.close() # `()` was missing.
 
         self.save_as_button = ttk.Button(
             self.out_tree_pane,
             text='Save New Tree As...',
-            command=ask_save_as_file)
+            command=ask_save_out_as_file)
         self.save_as_button.grid(row=0, column=3, sticky='we')
 
         # Clear out tree button
@@ -446,7 +461,7 @@ class App(tk.Frame):
         self.save_log_button = ttk.Button(
             self.log_pane,
             text='Save Log As...',
-            )
+            command=ask_save_log_as_file,)
         self.save_log_button.grid(row=0, column=1, sticky='we')
 
         # Clear out tree button
@@ -463,12 +478,6 @@ class App(tk.Frame):
             bg='#002B36',
             state='disabled',)
         self.log_area.grid(row=1, column=0, columnspan=3, sticky='wens')
-
-        def ask_save_log(**file_opt):
-            """Save log"""
-            return tkFileDialog.asksaveasfile(mode='w', **file_opt)
-
-        self.save_log_button['command'] = ask_save_log
 
         def clear_log():
             """Clear all contents in log widget area."""
