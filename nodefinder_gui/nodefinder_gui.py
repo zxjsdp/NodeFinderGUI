@@ -48,6 +48,196 @@ def time_now():
     return time.strftime("%H:%M:%S", time.localtime())
 
 
+class RightClickMenu(object):
+    """
+    Simple widget to add basic right click menus to entry widgets.
+
+    usage:
+
+    rclickmenu = RightClickMenu(some_entry_widget)
+    some_entry_widget.bind("<3>", rclickmenu)
+
+    If you prefer to import Tkinter over Tix, just replace all Tix
+    references with Tkinter and this will still work fine.
+    """
+    def __init__(self, parent):
+        self.parent = parent
+        # bind Control-A to select_all() to the widget.  All other
+        # accelerators seem to work fine without binding such as
+        # Ctrl-V, Ctrl-X, Ctrl-C etc.  Ctrl-A was the only one I had
+        # issue with.
+        self.parent.bind("<Control-a>", lambda e: self._select_all(), add='+')
+        self.parent.bind("<Control-A>", lambda e: self._select_all(), add='+')
+
+    def __call__(self, event):
+        # if the entry widget is disabled do nothing.
+        if self.parent.cget('state') == 'disable':
+            return
+        # grab focus of the entry widget.  this way you can see
+        # the cursor and any marking selections
+        self.parent.focus_force()
+        self.build_menu(event)
+
+    def build_menu(self, event):
+        """Build right click menu"""
+        menu = tk.Menu(self.parent, tearoff=0)
+        # check to see if there is any marked text in the entry widget.
+        # if not then Cut and Copy are disabled.
+        if not self.parent.selection_present():
+            menu.add_command(label="Cut", state='disable')
+            menu.add_command(label="Copy", state='disable')
+        else:
+            # use Tkinter's virtual events for brevity.  These could
+            # be hardcoded with our own functions to immitate the same
+            # actions but there's no point except as a novice exercise
+            # (which I recommend if you're a novice).
+            menu.add_command(label="Cut", command=self._cut)
+            menu.add_command(label="Copy", command=self._copy)
+        # if there's string data in the clipboard then make the normal
+        # Paste command.  otherwise disable it.
+        if self.paste_string_state():
+            menu.add_command(label="Paste", command=self._paste)
+        else:
+            menu.add_command(label="Paste", state='disable')
+        # again, if there's no marked text then the Delete option is disabled.
+        if not self.parent.selection_present():
+            menu.add_command(label="Delete", state='disable')
+        else:
+            menu.add_command(label="Delete", command=self._clear)
+        # make things pretty with a horizontal separator
+        menu.add_separator()
+        # I don't know of if there's a virtual event for select all though
+        # I did look in vain for documentation on -any- of Tkinter's
+        # virtual events.  Regardless, the method itself is trivial.
+        menu.add_command(label="Select All", command=self._select_all)
+        menu.post(event.x_root, event.y_root)
+
+    def _cut(self):
+        self.parent.event_generate("<<Cut>>")
+
+    def _copy(self):
+        self.parent.event_generate("<<Copy>>")
+
+    def _paste(self):
+        self.parent.event_generate("<<Paste>>")
+
+    def _clear(self):
+        self.parent.event_generate("<<Clear>>")
+
+    def _select_all(self):
+        self.parent.selection_range(0, 'end')
+        self.parent.icursor('end')
+        # return 'break' because, for some reason, Control-a (little 'a')
+        # doesn't work otherwise.  There's some natural binding that
+        # Tkinter entry widgets want to do that send the cursor to Home
+        # and deselects.
+        return 'break'
+
+    def paste_string_state(self):
+        """Returns true if a string is in the clipboard"""
+        try:
+            # this assignment will raise an exception if the data
+            # in the clipboard isn't a string (such as a picture).
+            # in which case we want to know about it so that the Paste
+            # option can be appropriately set normal or disabled.
+            clipboard = self.parent.selection_get(selection='CLIPBOARD')
+        except:
+            return False
+        return True
+
+
+class RightClickMenuForScrolledText(object):
+    """Simple widget to add basic right click menus to entry widgets."""
+    def __init__(self, parent):
+        self.parent = parent
+        # bind Control-A to select_all() to the widget.  All other
+        # accelerators seem to work fine without binding such as
+        # Ctrl-V, Ctrl-X, Ctrl-C etc.  Ctrl-A was the only one I had
+        # issue with.
+        self.parent.bind("<Control-a>", lambda e: self._select_all(), add='+')
+        self.parent.bind("<Control-A>", lambda e: self._select_all(), add='+')
+
+    def __call__(self, event):
+        # if the entry widget is disabled do nothing.
+        if self.parent.cget('state') == tk.DISABLED:
+            return
+        # grab focus of the entry widget.  this way you can see
+        # the cursor and any marking selections
+        self.parent.focus_force()
+        self.build_menu(event)
+
+    def build_menu(self, event):
+        """build menu"""
+        menu = tk.Menu(self.parent, tearoff=0)
+        # check to see if there is any marked text in the entry widget.
+        # if not then Cut and Copy are disabled.
+        # if not self.parent.selection_get():
+        #     menu.add_command(label="Cut", state=tk.DISABLED)
+        #     menu.add_command(label="Copy", state=tk.DISABLED)
+        # else:
+        # use Tkinter's virtual events for brevity.  These could
+        # be hardcoded with our own functions to immitate the same
+        # actions but there's no point except as a novice exercise
+        # (which I recommend if you're a novice).
+        menu.add_command(label="Cut", command=self._cut)
+        menu.add_command(label="Copy", command=self._copy)
+        # if there's string data in the clipboard then make the normal
+        # Paste command.  otherwise disable it.
+        if self._paste_string_state():
+            menu.add_command(label="Paste",
+                             command=self._paste_if_string_in_clipboard)
+        else:
+            menu.add_command(label="Paste", state='disable')
+        # again, if there's no marked text then the Delete option is disabled.
+        menu.add_command(label="Delete", command=self._delete)
+        # make things pretty with a horizontal separator
+        menu.add_separator()
+        # I don't know of if there's a virtual event for select all though
+        # I did look in vain for documentation on -any- of Tkinter's
+        # virtual events.  Regardless, the method itself is trivial.
+        menu.add_command(label="Select All", command=self._select_all)
+        menu.add_command(label="Clear All", command=self._clear_all)
+        menu.post(event.x_root, event.y_root)
+
+    def _cut(self):
+        self.parent.event_generate("<<Cut>>")
+
+    def _copy(self):
+        self.parent.event_generate("<<Copy>>")
+
+    def _delete(self):
+        self.parent.event_generate("<<Clear>>")
+
+    def _paste_if_string_in_clipboard(self):
+        self.parent.event_generate("<<Paste>>")
+
+    def _select_all(self,):
+        """select all"""
+        self.parent.tag_add('sel', "1.0", "end-1c")
+        self.parent.mark_set('insert', "1.0")
+        self.parent.see('insert')
+        return 'break'
+
+    def _paste_string_state(self):
+        """Returns true if a string is in the clipboard"""
+        try:
+            # this assignment will raise an exception if the data
+            # in the clipboard isn't a string (such as a picture).
+            # in which case we want to know about it so that the Paste
+            # option can be appropriately set normal or disabled.
+            clipboard = self.parent.selection_get(selection='CLIPBOARD')
+        except:
+            return False
+        return True
+
+    def _clear_all(self):
+        """Clear all"""
+        isok = askokcancel('Clear All', 'Erase all text?', parent=self.parent,
+                           default='ok')
+        if isok:
+            self.parent.delete('1.0', 'end')
+
+
 class TextEmit(object):
     """Redirect stdout and stderr to tk widgets."""
     def __init__(self, widget, tag='stdout'):
@@ -189,6 +379,8 @@ class App(tk.Frame):
         self.choose_tree_box = ttk.Combobox(self.tree_pane,
                                             textvariable=self.tree_name)
         self.choose_tree_box.grid(row=1, column=0, columnspan=2, sticky='we')
+        right_menu_tree_choose = RightClickMenu(self.choose_tree_box)
+        self.choose_tree_box.bind('<Button-3>', right_menu_tree_choose)
 
         self.load_history_button = ttk.Button(
             self.tree_pane,
@@ -200,6 +392,8 @@ class App(tk.Frame):
             self.tree_pane)
         self.tree_paste_area.grid(
             row=2, column=0, columnspan=3, sticky='wens')
+        right_menu_input = RightClickMenuForScrolledText(self.tree_paste_area)
+        self.tree_paste_area.bind('<Button-3>', right_menu_input)
 
         def ask_open_file():
             """Dialog to open file."""
@@ -298,10 +492,20 @@ class App(tk.Frame):
             self.config_pane, style='config.TCombobox')
         self.info_combobox.grid(row=3, column=3, sticky='we')
 
+        right_menu_name_a = RightClickMenu(self.name_a_combobox)
+        self.name_a_combobox.bind('<Button-3>', right_menu_name_a)
+        right_menu_name_b = RightClickMenu(self.name_b_combobox)
+        self.name_b_combobox.bind('<Button-3>', right_menu_name_b)
+        right_menu_info_combobox = RightClickMenu(self.info_combobox)
+        self.info_combobox.bind('<Button-3>', right_menu_info_combobox)
+
         self.config_lines_area = st.ScrolledText(
             self.config_pane, height=17)
         self.config_lines_area.grid(
             row=4, column=0, columnspan=4, sticky='wens')
+
+        right_menu_config = RightClickMenuForScrolledText(self.config_lines_area)
+        self.config_lines_area.bind('<Button-3>', right_menu_config)
 
         self.clear_config_area_button['command'] = lambda: \
             self.config_lines_area.delete('1.0', 'end')
@@ -436,6 +640,9 @@ class App(tk.Frame):
         self.out_tree_area = st.ScrolledText(self.out_tree_pane, bg='#FAFAFA')
         self.out_tree_area.grid(
             row=1, column=0, columnspan=5, sticky='wens')
+
+        right_menu_out = RightClickMenuForScrolledText(self.out_tree_area)
+        self.out_tree_area.bind('<Button-3>', right_menu_out)
 
         self.clear_out_tree_button['command'] = \
             lambda: self.out_tree_area.delete('1.0', 'end')
@@ -833,17 +1040,6 @@ def get_tree_str(raw_tree_content):
         else:
             tmp_tree_str += line
     return tmp_tree_str
-
-
-# def write_str_to_file(orig_tree_file_name, str_to_write):
-#     """Write string to a file"""
-#     re_extension = re.compile('[^.]+$')
-#     extension = re_extension.findall(orig_tree_file_name)[0]
-#     out_file_name = orig_tree_file_name.rstrip(extension) + 'cali.'\
-#         + extension
-#     with open(out_file_name, 'w') as f:
-#         f.write(str_to_write)
-#         print('\n[New Tree Written] >>>>> %s\n' % out_file_name)
 
 
 def main():
