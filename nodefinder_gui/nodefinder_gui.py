@@ -36,6 +36,66 @@ INIT_WINDOW_SIZE = '1200x700'
 THIN_BAR = '~' * 50
 LONG_BAR = '=' * 50
 
+ABOUT = """
+%s, GUI implementation of NodeFinder
+    Version  :  %s
+    URL (GUI):  https://github.com/zxjsdp/NodeFinderGUI
+    URL (C)  :  https://github.com/zxjsdp/NodeFinderC
+""" % (GUI_TITLE, __version__)
+
+DOCUMENTATION = """
+Documentation of %s (Ver. %s)
+
+[Basic Usage]
+
+    1. Open Newick tree file
+    2. Input calibration configs
+    3. Press "Execute All" button to execute
+
+[Config Syntax]
+
+    name_a, name_b, calibration_infomation_1
+    name_c, name_d, calibration_infomation_2
+    name_a, name_b, clade_label_information
+    name, branch_label_information
+    ..., ..., ...
+
+[Simple Example]
+
+    Given a Newick tree like this:
+
+        ((a ,((b, c), (d, e))), (f, g));
+
+    Use this calibration config (blanks are OK) (fake data):
+
+        c, b, >0.05<0.07
+        a, e, >0.1<0.2
+        c, f, >0.3<0.5
+        d, e, $1
+        a, #1
+
+    We will get output tree like this:
+
+        ((a #1 , ((b, c)>0.05<0.07, (d, e)$1))>0.1<0.2, (f, g))>0.3<0.5;
+
+    Topology (ASCII style):
+
+                +---------- a #1
+                |
+                | >0.1<0.2
+            +---|       +-- b
+            |   |   +---| >0.05<0.07
+            |   |   |   +-- c
+            |   +---|
+            |       |   +-- d
+            |       +---| $1
+        ----|>0.3<0.5   +-- e
+            |
+            |           +-- f
+            +-----------|
+                        +-- g
+""" % (GUI_TITLE, __version__)
+
 # Use set(list()) for Python2.6 compatibility
 NONE_TREE_NAME_SYMBOL_SET = set(
         [',', ';', ')', '"', "'", '#', '$', '@', '>', '<'])
@@ -288,7 +348,6 @@ class App(tk.Frame):
         self.combo_line_count = 0
 
         # GUI creating
-        self.create_menu_bar()
         self.set_style()
         self.create_widgets()
         self.configure_grid()
@@ -296,62 +355,7 @@ class App(tk.Frame):
         self.create_right_menu()
         self.bind_func()
         self.display_info()
-
-    def create_menu_bar(self):
-        """Create Menu Bar for NodeFinderGUI"""
-        menu_bar = tk.Menu(self.master)
-
-        # File Menu
-        file_menu = tk.Menu(menu_bar, tearoff=0)
-        file_menu.add_command(label='Open input tree file...',
-                              command=self.hello)
-        file_menu.add_separator()
-        file_menu.add_command(label='Save output tree to file...',
-                              command=self.hello)
-        file_menu.add_separator()
-        file_menu.add_command(label='Exit', command=self.quit)
-        menu_bar.add_cascade(label='File', menu=file_menu)
-
-        # Configure Menu
-        configs_menu = tk.Menu(menu_bar, tearoff=0)
-        configs_menu.add_command(label='Open config file...',
-                                 command=self.hello)
-        configs_menu.add_command(label='Save config to file...',
-                                 command=self.hello)
-        menu_bar.add_cascade(label="Configs", menu=configs_menu)
-
-        # Edit Menu
-        edit_menu = tk.Menu(menu_bar, tearoff=0)
-        edit_menu.add_command(label="Cut", command=self.hello)
-        edit_menu.add_command(label="Copy", command=self.hello)
-        edit_menu.add_command(label="Paste", command=self.hello)
-        edit_menu.add_separator()
-        edit_menu.add_command(label='Select All  (Input Area)',
-                              command=self.hello)
-        edit_menu.add_command(label='Clear All    (Input Area)',
-                              command=self.hello)
-        edit_menu.add_separator()
-        edit_menu.add_command(label='Select All  (Config Area)',
-                              command=self.hello)
-        edit_menu.add_command(label='Clear All    (Config Area)',
-                              command=self.hello)
-        edit_menu.add_separator()
-        edit_menu.add_command(label='Select All  (Output Area)',
-                              command=self.hello)
-        edit_menu.add_command(label='Clear All    (Output Area)',
-                              command=self.hello)
-        menu_bar.add_cascade(label="Edit", menu=edit_menu)
-
-        # Help Menu
-        help_menu = tk.Menu(menu_bar, tearoff=0)
-        help_menu.add_command(label="Documentation", command=self.hello)
-        help_menu.add_command(label="About", command=self.hello)
-        menu_bar.add_cascade(label="Help", menu=help_menu)
-
-        self.master.config(menu=menu_bar)
-
-    def hello(self):
-        print('hello menubar')
+        self.create_menu_bar()
 
     def set_style(self):
         """Set custom style for widget."""
@@ -769,8 +773,81 @@ class App(tk.Frame):
         self.save_log_button['command'] = self._ask_save_log_as_file
         self.clear_log_button['command'] = self._clear_log
 
+    def create_menu_bar(self):
+        """Create Menu Bar for NodeFinderGUI"""
+        menu_bar = tk.Menu(self.master)
+
+        # File Menu
+        file_menu = tk.Menu(menu_bar, tearoff=0)
+        file_menu.add_command(label='Open input tree file...',
+                              command=self._ask_open_file)
+        file_menu.add_separator()
+        file_menu.add_command(label='Save output tree to file...',
+                              command=self._ask_save_out_as_file)
+        file_menu.add_command(label='Save log to file...',
+                              command=self._ask_save_log_as_file)
+        file_menu.add_separator()
+        file_menu.add_command(label='Exit', command=self.quit)
+        menu_bar.add_cascade(label='File', menu=file_menu)
+
+        # Configure Menu
+        configs_menu = tk.Menu(menu_bar, tearoff=0)
+        configs_menu.add_command(label='Open config file...',
+                                 command=self._read_config_from_file)
+        configs_menu.add_command(label='Save config to file...',
+                                 command=self._save_config_to_file)
+        menu_bar.add_cascade(label="Configs", menu=configs_menu)
+
+        # Edit Menu
+        edit_menu = tk.Menu(menu_bar, tearoff=0)
+        edit_menu.add_command(label="Cut", command=self._cut)
+        edit_menu.add_command(label="Copy", command=self._copy)
+        # try:
+        #     edit_menu.add_command(label="Paste", command=self._paste)
+        # except Exception:
+        #     pass
+        if self._paste_string_state():
+            edit_menu.add_command(label="Paste", command=self._paste)
+        else:
+            edit_menu.add_command(
+                    label='Paste',
+                    command=lambda: print('No string in clipboard!'))
+        edit_menu.add_command(label="Delete", command=self._delete)
+        menu_bar.add_cascade(label="Edit", menu=edit_menu)
+
+        # Help Menu
+        help_menu = tk.Menu(menu_bar, tearoff=0)
+        help_menu.add_command(label="Documentation",
+                              command=self.display_documentation)
+        help_menu.add_command(label="About", command=self.display_about)
+        menu_bar.add_cascade(label="Help", menu=help_menu)
+
+        self.master.config(menu=menu_bar)
+
+    def display_documentation(self):
+        """Display documentation for menu bar about button."""
+        print(LONG_BAR)
+        print(DOCUMENTATION)
+        # print('Documentation of %s (Ver. %s):\n' % (GUI_TITLE, __version__))
+        # print('[Basic Usage]')
+        # print('  1. Open Newick tree file')
+        # print('  2. Input calibration configs')
+        # print('  3. Press "Execute All" button to execute\n')
+        # print('[Config Syntax]')
+        # print('  name_a, name_b, calibration_infomation_1')
+        # print('  name_c, name_d, calibration_infomation_2')
+        # print('  name_a, name_b, clade_label_information')
+        # print('  name, branch_label_information')
+        # print('  ..., ..., ...')
+        print(LONG_BAR)
+
+    def display_about(self):
+        """Display about information for menu bar about button."""
+        print(LONG_BAR)
+        print(ABOUT)
+        print(LONG_BAR)
+
     def display_info(self):
-        # Output
         sys.stdout = TextEmit(self.log_area, 'stdout')
         sys.stderr = TextEmit(self.log_area, 'stderr')
 
@@ -779,6 +856,38 @@ class App(tk.Frame):
         print(time.strftime("  %d %b %Y,  %a %H:%M:%S",
                             time.localtime()))
         print(LONG_BAR)
+        print('\nIf you need help, please check the menu bar:\n\n'
+              '   Help -> Documentation\n')
+
+    def _copy(self):
+        # self.master.clipboard_clear()
+        # self.master.clipboard_append(self.master.focus_get().selection_get())
+        self.master.focus_get().event_generate("<<Copy>>")
+
+    def _cut(self):
+        # self.master.clipboard_clear()
+        # self.master.clipboard_append(self.master.focus_get().selection_get())
+        # # self.master.focus_get().selection_clear()
+        self.master.focus_get().event_generate("<<Cut>>")
+
+    def _paste(self):
+        # print(self.master.selection_get(selection='CLIPBOARD'))
+        self.master.focus_get().event_generate("<<Paste>>")
+
+    def _delete(self):
+        self.master.focus_get().event_generate("<<Clear>>")
+
+    def _paste_string_state(self):
+        """Returns true if a string is in the clipboard"""
+        try:
+            # this assignment will raise an exception if the data
+            # in the clipboard isn't a string (such as a picture).
+            # in which case we want to know about it so that the Paste
+            # option can be appropriately set normal or disabled.
+            clipboard = self.master.selection_get(selection='CLIPBOARD')
+        except:
+            return False
+        return True
 
     def _ask_open_file(self):
         """Dialog to open file."""
@@ -791,7 +900,7 @@ class App(tk.Frame):
 
             abs_path = c.name
             base_name = os.path.basename(abs_path)
-            print('[ INFO | %s ] File open: %s' % (time_now(), base_name))
+            print('[ INFO | %s ] Open tree file: %s' % (time_now(), base_name))
             # Add to history (Feature Not Implemented)
             self.file_path_history_list.insert(0, abs_path)
             self.choose_tree_box['values'] = self.file_path_history_list
@@ -934,6 +1043,10 @@ class App(tk.Frame):
         self.final_tree = multi_calibration(tree_str, calibration_list)
         self.out_tree_area.delete('1.0', 'end')
         self.out_tree_area.insert('end', self.final_tree)
+
+    def hello(self):
+        """Simple hello function for testing use."""
+        print('Hello NodeFinderGUI!')
 
 
 def clean_elements(orig_list):
