@@ -6,6 +6,12 @@ Next Release
 
 Will be released in the near future...
 
+Version v0.4.6
+--------------
+
+Bugfix:
+- Fix display insertion point for 20 char width bug
+
 Version v0.4.5
 --------------
 
