@@ -6,7 +6,14 @@ Next Release
 
 Will be released in the near future...
 
-Version v0.4.3
+Version v0.4.5
+--------------
+
+Feature:
+- Add read and save config file buttons
+- Add menubar and menu items
+
+Version v0.4.4
 --------------
 
 Feature:
