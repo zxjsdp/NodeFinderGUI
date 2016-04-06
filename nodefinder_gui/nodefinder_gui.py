@@ -28,7 +28,7 @@ elif sys.version[0] == '3':
 else:
     raise ImportError('Cannot identify your Python version.')
 
-__version__ = '0.4.5'
+__version__ = '0.4.6'
 __author__ = 'Jin'
 
 GUI_TITLE = "NodeFinder GUI"
