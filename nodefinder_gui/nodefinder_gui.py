@@ -1281,12 +1281,19 @@ def multi_calibration(tree_str, cali_tuple_list):
     global global_insertion_list_cache
     global_insertion_list_cache = {}
     print('\n\n====================================================')
-    print('=============== [ New Job: %s] ===============' % time_now())
+    print('                [ New Job: %s]' % time_now())
     print('====================================================')
+    # Print valid calibration information
+    print('\n[Valid Calibrations]\n')
+    for i, each_cali_tuple in enumerate(cali_tuple_list):
+        print('%4d |  %s' % (i+1, ' ,'.join(each_cali_tuple)))
+
+    # Do multiple calibrations
     for i, each_cali_tuple in enumerate(cali_tuple_list):
         if len(each_cali_tuple) == 3:
             name_a, name_b, cali_or_clade_info = each_cali_tuple
             print('\n')
+            print(THIN_BAR)
             print('[%d]:  %s' % (i + 1, ', '.join(each_cali_tuple)))
             print(THIN_BAR)
             print('[Name A]:  ', name_a)
@@ -1302,10 +1309,10 @@ def multi_calibration(tree_str, cali_tuple_list):
                       cali_or_clade_info)
             tree_str = single_calibration(tree_str, name_a, name_b,
                                           cali_or_clade_info)
-            print(THIN_BAR)
         elif len(each_cali_tuple) == 2:
             name_a, branch_label = each_cali_tuple
             print('\n')
+            print(THIN_BAR)
             print('[%d]:  %s' % (i + 1, ', '.join(each_cali_tuple)))
             print(THIN_BAR)
             print('[ Name ]:  ', name_a)
@@ -1317,7 +1324,6 @@ def multi_calibration(tree_str, cali_tuple_list):
                 print('\n[Warning]: Is this valid symbel?  %s     [ !!! ]\n' %
                       branch_label)
             tree_str = add_single_branch_label(tree_str, name_a, branch_label)
-            print(THIN_BAR)
     final_tree = tree_str.replace(',', ', ')
     return final_tree
 
