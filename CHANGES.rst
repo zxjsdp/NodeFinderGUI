@@ -1,10 +1,14 @@
 Version History
 ===============
 
-Version v0.4.6
+Version v0.4.7
 --------------
 
 * FEATURE: Display valid calibration configs
+
+Version v0.4.6
+--------------
+
 * BUGFIX: Fix display insertion point for 20 char width bug
 
 Version v0.4.5
