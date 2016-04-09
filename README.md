@@ -15,12 +15,14 @@ bipartition/multifurcating Newick format phylogenetic tree:
 
 Command Line Version
 --------------------
-[NodeFinder](https://github.com/zxjsdp/NodeFinder)
+[NodeFinderC](https://github.com/zxjsdp/nodefinderc) (recommended), C implementation of NodeFinder.
+
+[NodeFinder](https://github.com/zxjsdp/NodeFinder), Python command line version.
 
 
 Screenshot
 ----------
-![Screenshot](./data/screen_shot.png)
+![Screenshot](./data/NodeFinderGUI_v0.4.6.png)
 
 
 Simple Usage
