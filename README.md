@@ -13,6 +13,16 @@ bipartition/multifurcating Newick format phylogenetic tree:
 3. Branch Label
 
 
+Download
+--------
+
+For **Windows** users, you can just download the latest compiled byte code pyw file ([nodefinder_gui.latest.pyw](https://raw.githubusercontent.com/zxjsdp/NodeFinderGUI/master/latest_pyw/nodefinder_gui.latest.pyw)), then double click to run it.
+
+For **Linux** and **MacOS** users, you can also try [nodefinder_gui.latest.pyw](https://raw.githubusercontent.com/zxjsdp/NodeFinderGUI/master/latest_pyw/nodefinder_gui.latest.pyw), or download [nodefinder_gui/nodefinder_gui.py](https://raw.githubusercontent.com/zxjsdp/NodeFinderGUI/master/nodefinder_gui/nodefinder_gui.py) and run it.
+
+Compiled byte code `.pyw` file in the [latest_pyw](https://github.com/zxjsdp/NodeFinderGUI/tree/master/latest_pyw) folder is a `.pyc` file that was compiled by the Python interpreter to byte code, then changed extension to `.pyw`. It's faster to launch on slow computers since no more `source code -> byte code` procedure need to be done.
+
+
 Command Line Version
 --------------------
 [NodeFinderC](https://github.com/zxjsdp/nodefinderc) (recommended), C implementation of NodeFinder.
