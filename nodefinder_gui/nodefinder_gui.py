@@ -684,10 +684,10 @@ class App(tk.Frame):
         # |                   |                   |
         # +-------------------+-------------------+
         # Configure row and column
-        self.master.rowconfigure(0, weight=1)
-        self.master.rowconfigure(1, weight=1)
-        self.master.columnconfigure(0, weight=1)
-        self.master.columnconfigure(1, weight=1)
+        self.master.rowconfigure(0, weight=1, uniform='fred')
+        self.master.rowconfigure(1, weight=1, uniform='fred')
+        self.master.columnconfigure(0, weight=1, uniform='fred')
+        self.master.columnconfigure(1, weight=1, uniform='fred')
 
         # Orig Tree, Left Up
         self.tree_pane.rowconfigure(0, weight=0)
