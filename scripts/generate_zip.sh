@@ -48,11 +48,14 @@ if [ -e "$NODEFINDERGUI_ZIP_REPO_PATH/NodeFinderGUI.zip" ]
 then
     rm "$NODEFINDERGUI_ZIP_REPO_PATH/NodeFinderGUI.zip"
 fi
+
+# Move NodeFinderGUI.zip & NodeFinderGUi.pyw to "../NodeFinderGUI-Downloads"
 mv NodeFinderGUI.zip "$NODEFINDERGUI_ZIP_REPO_PATH/"
+mv nodefinder_gui/NodeFinderGUI.pyw "$NODEFINDERGUI_ZIP_REPO_PATH/"
 
 # Cleaning job
 echo "Cleaning ..."
-rm -rf NodeFinderGUI nodefinder_gui/NodeFinderGUI.pyw
+rm -rf NodeFinderGUI
 if [ -e NodeFinderGUI.zip ]
 then
     rm NodeFinderGUI.zip

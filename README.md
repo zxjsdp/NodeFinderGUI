@@ -18,12 +18,21 @@ bipartition/multifurcating Newick format phylogenetic tree:
 
 Download
 --------
-Please download the zip file: [NodeFinderGUI.zip](https://raw.githubusercontent.com/zxjsdp/NodeFinderGUI/master/NodeFinderGUI.zip)
 
-For **Windows**, **Linux** and **MacOS**  users, unzip the file, double click the latest compiled byte code pyw file ([NodeFinderGUI.pyw](https://raw.githubusercontent.com/zxjsdp/NodeFinderGUI/master/latest_pyw/nodefinder_gui.latest.pyw)), double click `nodefinder_gui.py`, or use `import noderfinder_gui.py`
+Please download the latest zipped file: [NodeFinderGUI.zip](https://raw.githubusercontent.com/zxjsdp/NodeFinderGUI-Downloads/master/NodeFinderGUI.zip)
 
-The compiled byte code `.pyw` file in the [NodeFinderGUI_pyw](https://github.com/zxjsdp/NodeFinderGUI/tree/master/latest_pyw) folder is a `.pyc` file that was compiled by the Python interpreter to byte code, then changed extension to `.pyw`. It's faster to launch on slow computers since no more `source code -> byte code` procedure need to be done.
+If you don't need the README file and the Demo GIF file, just download the [NodeFinder.pyw](https://raw.githubusercontent.com/zxjsdp/NodeFinderGUI-Downloads/master/NodeFinderGUI.pyw) file or [nodefinder_gui.py](https://raw.githubusercontent.com/zxjsdp/NodeFinderGUI/tree/master/nodefinder_gui/nodefinder_gui.py) file.
 
+If the `pyw` file does not work, please try the `nodefinder_gui.py` file. The compiled byte code `.pyw` file is essentially a `.pyc` file that was compiled by the Python interpreter to byte code, then changed extension to `.pyw`. It's faster to launch on slow computers since no more `source code -> byte code` procedure need to be done.
+
+Usage
+-----
+
+Unzip NodeFinderGUI.zip, then,
+
+- Double click the latest compiled byte code pyw file `NodeFinderGUI.pyw`
+- Or double click `nodefinder_gui.py`
+- Or use `import noderfinder_gui.py`.
 
 Command Line Version
 --------------------
