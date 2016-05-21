@@ -2,15 +2,16 @@
 
 # This script is used to generate .pyw file automatically
 # This script must be called as:
-#  scripts/generate_pyw.sh
+#  scripts/generate_zip.sh
 
+NODEFINDERGUI_ZIP_REPO_PATH='../NodeFinderGUI-Downloads'
 UNAMES="$(uname -s)"
 
 # Check if run this script in the right directory
 if [ ! -e setup.py ]
 then
     echo "Run this script in the same folder with setup.py"
-    echo "  Usage: scripts/generate_pyw.sh"
+    echo "  Usage: scripts/generate_zip.sh"
     exit
 fi
 
@@ -41,7 +42,21 @@ else
     echo "Unknown Platform! Zip failed!!"
 fi
 
+# Move zip file to NodeFinderGUI-Downloads repository
+# https://github.com/zxjsdp/NodeFinderGUI-Downloads
+if [ -e "$NODEFINDERGUI_ZIP_REPO_PATH/NodeFinderGUI.zip" ]
+then
+    rm "$NODEFINDERGUI_ZIP_REPO_PATH/NodeFinderGUI.zip"
+fi
+
+# Move NodeFinderGUI.zip & NodeFinderGUi.pyw to "../NodeFinderGUI-Downloads"
+mv NodeFinderGUI.zip "$NODEFINDERGUI_ZIP_REPO_PATH/"
+mv nodefinder_gui/NodeFinderGUI.pyw "$NODEFINDERGUI_ZIP_REPO_PATH/"
+
 # Cleaning job
 echo "Cleaning ..."
 rm -rf NodeFinderGUI
-rm -rf nodefinder_gui/NodeFinderGUI.pyw
+if [ -e NodeFinderGUI.zip ]
+then
+    rm NodeFinderGUI.zip
+fi
