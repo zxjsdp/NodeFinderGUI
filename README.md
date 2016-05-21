@@ -2,7 +2,7 @@ NodeFinderGUI
 =============
 GUI for NodeFinder Program
 
-![Screenshot](./data/NodeFinderGUI_v0.4.6.png)
+![NodeFinderGUI Demo](./data/NodeFinderGUI_Demo.gif)
 
 Introduction
 ------------
@@ -14,6 +14,7 @@ bipartition/multifurcating Newick format phylogenetic tree:
 2. Clade Label;
 3. Branch Label
 
+![Screenshot](./data/NodeFinderGUI_v0.4.6.png)
 
 Download
 --------
