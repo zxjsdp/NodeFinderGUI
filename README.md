@@ -21,7 +21,7 @@ Download
 
 Please download the latest zipped file: [NodeFinderGUI.zip](https://raw.githubusercontent.com/zxjsdp/NodeFinderGUI-Downloads/master/NodeFinderGUI.zip)
 
-If you don't need the README file and the Demo GIF file, just download the [NodeFinder.pyw](https://raw.githubusercontent.com/zxjsdp/NodeFinderGUI-Downloads/master/NodeFinderGUI.pyw) file or [nodefinder_gui.py](https://raw.githubusercontent.com/zxjsdp/NodeFinderGUI/tree/master/nodefinder_gui/nodefinder_gui.py) file.
+If you don't need the README file and the Demo GIF file, just download the [NodeFinder.pyw](https://raw.githubusercontent.com/zxjsdp/NodeFinderGUI-Downloads/master/NodeFinderGUI.pyw) file or [nodefinder_gui.py](https://raw.githubusercontent.com/zxjsdp/NodeFinderGUI/master/nodefinder_gui/nodefinder_gui.py) file.
 
 If the `pyw` file does not work, please try the `nodefinder_gui.py` file. The compiled byte code `.pyw` file is essentially a `.pyc` file that was compiled by the Python interpreter to byte code, then changed extension to `.pyw`. It's faster to launch on slow computers since no more `source code -> byte code` procedure need to be done.
 
