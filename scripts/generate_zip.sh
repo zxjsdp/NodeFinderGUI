@@ -2,7 +2,7 @@
 
 # This script is used to generate .pyw file automatically
 # This script must be called as:
-#  scripts/generate_pyw.sh
+#  scripts/generate_zip.sh
 
 NODEFINDERGUI_ZIP_REPO_PATH='../NodeFinderGUI-Downloads'
 UNAMES="$(uname -s)"
@@ -11,7 +11,7 @@ UNAMES="$(uname -s)"
 if [ ! -e setup.py ]
 then
     echo "Run this script in the same folder with setup.py"
-    echo "  Usage: scripts/generate_pyw.sh"
+    echo "  Usage: scripts/generate_zip.sh"
     exit
 fi
 
