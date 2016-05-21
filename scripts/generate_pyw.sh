@@ -4,6 +4,7 @@
 # This script must be called as:
 #  scripts/generate_pyw.sh
 
+NODEFINDERGUI_ZIP_REPO_PATH='../NodeFinderGUI-Downloads'
 UNAMES="$(uname -s)"
 
 # Check if run this script in the right directory
@@ -41,7 +42,18 @@ else
     echo "Unknown Platform! Zip failed!!"
 fi
 
+# Move zip file to NodeFinderGUI-Downloads repository
+# https://github.com/zxjsdp/NodeFinderGUI-Downloads
+if [ -e "$NODEFINDERGUI_ZIP_REPO_PATH/NodeFinderGUI.zip" ]
+then
+    rm "$NODEFINDERGUI_ZIP_REPO_PATH/NodeFinderGUI.zip"
+fi
+mv NodeFinderGUI.zip "$NODEFINDERGUI_ZIP_REPO_PATH/"
+
 # Cleaning job
 echo "Cleaning ..."
-rm -rf NodeFinderGUI
-rm -rf nodefinder_gui/NodeFinderGUI.pyw
+rm -rf NodeFinderGUI nodefinder_gui/NodeFinderGUI.pyw
+if [ -e NodeFinderGUI.zip ]
+then
+    rm NodeFinderGUI.zip
+fi
