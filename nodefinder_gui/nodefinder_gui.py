@@ -11,6 +11,7 @@ import os
 import re
 import sys
 import time
+import platform
 from subprocess import Popen, PIPE
 
 if sys.version[0] == '2':
@@ -35,6 +36,11 @@ GUI_TITLE = "NodeFinder GUI"
 INIT_WINDOW_SIZE = '1200x700'
 THIN_BAR = '~' * 50
 LONG_BAR = '=' * 50
+
+CURRENT_PLATFORM = platform.system()
+WINDOWS_PLATFORM = 'Windows'
+LINUX_PLATFORM = 'Linux'
+MAC_PLATFORM = 'Darwin'
 
 ABOUT = """
 %s, GUI implementation of NodeFinder
@@ -724,30 +730,43 @@ class App(tk.Frame):
         self.log_pane.columnconfigure(2, weight=0)
 
     def create_right_menu(self):
+        def _bind_right_menu_for_all_platforms(widget, right_menu_obj):
+            # Bind right click menu to all platforms
+            if CURRENT_PLATFORM in (MAC_PLATFORM,):
+                widget.bind('<Button-2>', right_menu_obj)
+            else:
+                widget.bind('<Button-3>', right_menu_obj)
         # Right click menu for choose tree combobox
         right_menu_tree_choose = RightClickMenu(self.choose_tree_box)
-        self.choose_tree_box.bind('<Button-3>', right_menu_tree_choose)
+        _bind_right_menu_for_all_platforms(self.choose_tree_box,
+                                           right_menu_tree_choose)
 
         # Right Click menu for tree input area
         right_menu_input = RightClickMenuForScrolledText(self.tree_paste_area)
-        self.tree_paste_area.bind('<Button-3>', right_menu_input)
+        _bind_right_menu_for_all_platforms(self.tree_paste_area,
+                                           right_menu_input)
 
         # Right click menu for three input combobox in config_pane
         right_menu_name_a = RightClickMenu(self.name_a_combobox)
-        self.name_a_combobox.bind('<Button-3>', right_menu_name_a)
+        _bind_right_menu_for_all_platforms(self.name_a_combobox,
+                                           right_menu_name_a)
         right_menu_name_b = RightClickMenu(self.name_b_combobox)
-        self.name_b_combobox.bind('<Button-3>', right_menu_name_b)
+        _bind_right_menu_for_all_platforms(self.name_b_combobox,
+                                           right_menu_name_b)
         right_menu_info_combobox = RightClickMenu(self.info_combobox)
-        self.info_combobox.bind('<Button-3>', right_menu_info_combobox)
+        _bind_right_menu_for_all_platforms(self.info_combobox,
+                                           right_menu_info_combobox)
 
         # Right click menu for config input area
         right_menu_config = RightClickMenuForScrolledText(
             self.config_lines_area)
-        self.config_lines_area.bind('<Button-3>', right_menu_config)
+        _bind_right_menu_for_all_platforms(self.config_lines_area,
+                                           right_menu_config)
 
         # Right click menu for output area
         right_menu_out = RightClickMenuForScrolledText(self.out_tree_area)
-        self.out_tree_area.bind('<Button-3>', right_menu_out)
+        _bind_right_menu_for_all_platforms(self.out_tree_area,
+                                           right_menu_out)
 
     def bind_func(self):
         # input_pane
