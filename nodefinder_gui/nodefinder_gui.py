@@ -32,6 +32,35 @@ else:
 __version__ = '0.4.6'
 __author__ = 'Jin'
 
+# ===========================================================
+# Options you may want to change
+# ===========================================================
+
+# The length of insertion position display.
+# For example, default value (20):
+#           |      -> 20 <-     ||     -> 20 <-     |
+# [Insert]:  b,c)>0.05<0.07,(d,e)))>0.1<0.2,(f,g))>0.
+# [Insert]:                   ->||<-
+# [Insert]:                 Insert Here
+INSERT_POSITION_HALF_SIZE = 40
+
+# Use set(list()) rather than {} for Python2.6 compatibility
+NONE_TREE_NAME_SYMBOL_SET = set(
+    [',', ';', ')', '"', "'", '#', '$', '@', '>', '<'])
+NO_CALI_EXISTS_SYMBOL_SET = set([',', ';', ')'])
+WITH_CALI_EXISTS_SYMBOL_SET = set(
+    ['>', '<', '@', '0', '1', "'", '"', '$', ':'])
+NO_LABEL_EXISTS_SYMBOL_SET = set([',', ';', ')'])
+WITH_LABEL_EXISTS_SYMBOL_SET = set(
+    ['>', '<', '@', '0', '1', "'", '"', '$', ':', '#'])
+WARNING_CALI_OR_LABEL_INFO_SYMBOL_SET = set(
+    ['>', '<', '@', '#', '$', "'", '"', ':'])
+WARNING_BRANCH_LABEL_SYMBOL_SET = set(['@', '#', '$', "'", ':'])
+
+# ===========================================================
+# Options generally don't need to be changed
+# ===========================================================
+
 GUI_TITLE = "NodeFinder GUI"
 INIT_WINDOW_SIZE = '1200x700'
 THIN_BAR = '~' * 50
@@ -101,19 +130,6 @@ Documentation of %s (Ver. %s)
             +-----------|
                         +-- g
 """ % (GUI_TITLE, __version__)
-
-# Use set(list()) for Python2.6 compatibility
-NONE_TREE_NAME_SYMBOL_SET = set(
-    [',', ';', ')', '"', "'", '#', '$', '@', '>', '<'])
-NO_CALI_EXISTS_SYMBOL_SET = set([',', ';', ')'])
-WITH_CALI_EXISTS_SYMBOL_SET = set(
-    ['>', '<', '@', '0', '1', "'", '"', '$', ':'])
-NO_LABEL_EXISTS_SYMBOL_SET = set([',', ';', ')'])
-WITH_LABEL_EXISTS_SYMBOL_SET = set(
-    ['>', '<', '@', '0', '1', "'", '"', '$', ':', '#'])
-WARNING_CALI_OR_LABEL_INFO_SYMBOL_SET = set(
-    ['>', '<', '@', '#', '$', "'", '"', ':'])
-WARNING_BRANCH_LABEL_SYMBOL_SET = set(['@', '#', '$', "'", ':'])
 
 global_insertion_list_cache = {}
 
@@ -1152,27 +1168,31 @@ def get_index_of_tmrca(clean_tree_str, name_a, name_b):
 
     tree_len = len(clean_tree_str)
     print('[Common]:   %s\n' % cali_point)
-    if cali_point < 20 <= tree_len - cali_point:
+    if cali_point < INSERT_POSITION_HALF_SIZE <= tree_len - cali_point:
         print('[Insert]:   %s%s' % (
-            ' ' * (20 - cali_point),
-            clean_tree_str[:cali_point + 20])
-        )
-    elif cali_point >= 20 > tree_len - cali_point:
-        print('[Insert]:   %s' % (
-            clean_tree_str[
-                cali_point- 20:cali_point + (tree_len - cali_point)])
-        )
-    elif cali_point < 20 and tree_len - cali_point < 20:
+            ' ' * (INSERT_POSITION_HALF_SIZE - cali_point),
+            clean_tree_str[:cali_point + INSERT_POSITION_HALF_SIZE])
+              )
+    elif cali_point >= INSERT_POSITION_HALF_SIZE > tree_len - cali_point:
+        print('[Insert]:   %s' %
+              (clean_tree_str[cali_point
+                              - INSERT_POSITION_HALF_SIZE:cali_point
+                              + (tree_len - cali_point)])
+              )
+    elif cali_point < INSERT_POSITION_HALF_SIZE and \
+            tree_len - cali_point < INSERT_POSITION_HALF_SIZE:
         print('[Insert]:   %s%s' % (
-            ' ' * (20 - cali_point),
+            ' ' * (INSERT_POSITION_HALF_SIZE - cali_point),
             clean_tree_str[:cali_point + (tree_len - cali_point)])
-        )
+              )
     else:
-        print('[Insert]:   %s' % (
-            clean_tree_str[cali_point - 20:cali_point + 20])
-        )
-    print('[Insert]:                    ->||<-                 ')
-    print('[Insert]:                  Insert Here              ')
+        print('[Insert]:   %s' %
+              (clean_tree_str[cali_point
+                              - INSERT_POSITION_HALF_SIZE:cali_point
+                              + INSERT_POSITION_HALF_SIZE])
+              )
+    print('[Insert]:   %s  ->||<-' % (' ' * (INSERT_POSITION_HALF_SIZE-5)))
+    print('[Insert]:   %sInsert Here' % (' ' * (INSERT_POSITION_HALF_SIZE-5)))
 
     return cali_point
 
@@ -1236,27 +1256,33 @@ def add_single_branch_label(tree_str, name_a, branch_label):
 
     tree_len = len(clean_tree_str)
     print('[Common]:   %s\n' % insert_point)
-    if insert_point < 20 <= tree_len - insert_point:
+    if insert_point < INSERT_POSITION_HALF_SIZE <= tree_len - insert_point:
         print('[Insert]:   %s%s' % (
-            ' ' * (20 - insert_point),
-            clean_tree_str[:insert_point + 20])
+            ' ' * (INSERT_POSITION_HALF_SIZE - insert_point),
+            clean_tree_str[:insert_point + INSERT_POSITION_HALF_SIZE])
               )
-    elif insert_point >= 20 > tree_len - insert_point:
+    elif insert_point >= INSERT_POSITION_HALF_SIZE > tree_len - insert_point:
         print('[Insert]:   %s' % (
-            clean_tree_str[
-                insert_point - 20:insert_point + (tree_len - insert_point)])
+              clean_tree_str[
+                  insert_point -
+                  INSERT_POSITION_HALF_SIZE:insert_point +
+                  (tree_len - insert_point)])
               )
-    elif insert_point < 20 and tree_len - insert_point < 20:
-        print('[Insert]:   %s%s' % (
-            ' ' * (20 - insert_point),
-            clean_tree_str[:insert_point + (tree_len - insert_point)])
+    elif insert_point < INSERT_POSITION_HALF_SIZE and \
+            tree_len - insert_point < INSERT_POSITION_HALF_SIZE:
+        print('[Insert]:   %s%s' %
+              (' ' * (INSERT_POSITION_HALF_SIZE - insert_point),
+               clean_tree_str[:insert_point + (tree_len - insert_point)])
               )
     else:
         print('[Insert]:   %s' % (
-            clean_tree_str[insert_point - 20:insert_point + 20])
+            clean_tree_str[
+                insert_point -
+                INSERT_POSITION_HALF_SIZE:insert_point +
+                INSERT_POSITION_HALF_SIZE])
               )
-    print('[Insert]:                    ->||<-                 ')
-    print('[Insert]:                  Insert Here              ')
+    print('[Insert]:   %s  ->||<-' % (' ' * (INSERT_POSITION_HALF_SIZE-5)))
+    print('[Insert]:   %sInsert Here' % (' ' * (INSERT_POSITION_HALF_SIZE-5)))
 
     # Check is there was something there
     # Nothing there before
@@ -1305,7 +1331,7 @@ def multi_calibration(tree_str, cali_tuple_list):
     # Print valid calibration information
     print('\n[Valid Calibrations]\n')
     for i, each_cali_tuple in enumerate(cali_tuple_list):
-        print('%4d |  %s' % (i+1, ' ,'.join(each_cali_tuple)))
+        print('%4d |  %s' % (i + 1, ' ,'.join(each_cali_tuple)))
 
     # Do multiple calibrations
     for i, each_cali_tuple in enumerate(cali_tuple_list):
