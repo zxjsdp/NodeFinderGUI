@@ -1237,27 +1237,33 @@ def add_single_branch_label(tree_str, name_a, branch_label):
 
     tree_len = len(clean_tree_str)
     print('[Common]:   %s\n' % insert_point)
-    if insert_point < 20 <= tree_len - insert_point:
+    if insert_point < INSERT_POSITION_HALF_SIZE <= tree_len - insert_point:
         print('[Insert]:   %s%s' % (
-            ' ' * (20 - insert_point),
-            clean_tree_str[:insert_point + 20])
+            ' ' * (INSERT_POSITION_HALF_SIZE - insert_point),
+            clean_tree_str[:insert_point + INSERT_POSITION_HALF_SIZE])
               )
-    elif insert_point >= 20 > tree_len - insert_point:
+    elif insert_point >= INSERT_POSITION_HALF_SIZE > tree_len - insert_point:
         print('[Insert]:   %s' % (
-            clean_tree_str[
-            insert_point - 20:insert_point + (tree_len - insert_point)])
+              clean_tree_str[
+                  insert_point -
+                  INSERT_POSITION_HALF_SIZE:insert_point +
+                  (tree_len - insert_point)])
               )
-    elif insert_point < 20 and tree_len - insert_point < 20:
-        print('[Insert]:   %s%s' % (
-            ' ' * (20 - insert_point),
-            clean_tree_str[:insert_point + (tree_len - insert_point)])
+    elif insert_point < INSERT_POSITION_HALF_SIZE and \
+            tree_len - insert_point < INSERT_POSITION_HALF_SIZE:
+        print('[Insert]:   %s%s' %
+              (' ' * (INSERT_POSITION_HALF_SIZE - insert_point),
+               clean_tree_str[:insert_point + (tree_len - insert_point)])
               )
     else:
         print('[Insert]:   %s' % (
-            clean_tree_str[insert_point - 20:insert_point + 20])
+            clean_tree_str[
+                insert_point -
+                INSERT_POSITION_HALF_SIZE:insert_point +
+                INSERT_POSITION_HALF_SIZE])
               )
-    print('[Insert]:                    ->||<-                 ')
-    print('[Insert]:                  Insert Here              ')
+    print('[Insert]:   %s  ->||<-' % (' ' * (INSERT_POSITION_HALF_SIZE-5)))
+    print('[Insert]:   %sInsert Here' % (' ' * (INSERT_POSITION_HALF_SIZE-5)))
 
     # Check is there was something there
     # Nothing there before
