@@ -2,7 +2,7 @@ NodeFinderGUI
 =============
 GUI for NodeFinder Program
 
-![Screenshot](./data/NodeFinderGUI_v0.4.6.png)
+![NodeFinderGUI Demo](./data/NodeFinderGUI_Demo.gif)
 
 Introduction
 ------------
@@ -14,16 +14,25 @@ bipartition/multifurcating Newick format phylogenetic tree:
 2. Clade Label;
 3. Branch Label
 
+![Screenshot](./data/NodeFinderGUI_v0.4.6.png)
 
 Download
 --------
 
-For **Windows** users, you can just download the latest compiled byte code pyw file ([nodefinder_gui.latest.pyw](https://raw.githubusercontent.com/zxjsdp/NodeFinderGUI/master/latest_pyw/nodefinder_gui.latest.pyw)), then double click to run it.
+Please download the latest zipped file: [NodeFinderGUI.zip](https://raw.githubusercontent.com/zxjsdp/NodeFinderGUI-Downloads/master/NodeFinderGUI.zip)
 
-For **Linux** and **MacOS** users, you can also try [nodefinder_gui.latest.pyw](https://raw.githubusercontent.com/zxjsdp/NodeFinderGUI/master/latest_pyw/nodefinder_gui.latest.pyw), or download [nodefinder_gui/nodefinder_gui.py](https://raw.githubusercontent.com/zxjsdp/NodeFinderGUI/master/nodefinder_gui/nodefinder_gui.py) and run it.
+If you don't need the README file and the Demo GIF file, just download the [NodeFinder.pyw](https://raw.githubusercontent.com/zxjsdp/NodeFinderGUI-Downloads/master/NodeFinderGUI.pyw) file or [nodefinder_gui.py](https://raw.githubusercontent.com/zxjsdp/NodeFinderGUI/master/nodefinder_gui/nodefinder_gui.py) file.
 
-The compiled byte code `.pyw` file in the [latest_pyw](https://github.com/zxjsdp/NodeFinderGUI/tree/master/latest_pyw) folder is a `.pyc` file that was compiled by the Python interpreter to byte code, then changed extension to `.pyw`. It's faster to launch on slow computers since no more `source code -> byte code` procedure need to be done.
+If the `pyw` file does not work, please try the `nodefinder_gui.py` file. The compiled byte code `.pyw` file is essentially a `.pyc` file that was compiled by the Python interpreter to byte code, then changed extension to `.pyw`. It's faster to launch on slow computers since no more `source code -> byte code` procedure need to be done.
 
+Usage
+-----
+
+Unzip NodeFinderGUI.zip, then,
+
+- Double click the latest compiled byte code pyw file `NodeFinderGUI.pyw`
+- Or double click `nodefinder_gui.py`
+- Or use `import noderfinder_gui.py`.
 
 Command Line Version
 --------------------

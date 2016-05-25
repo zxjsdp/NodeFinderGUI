@@ -5,6 +5,7 @@ Version v0.4.7
 --------------
 
 * FEATURE: Display valid calibration configs
+* BUGFIX: Right click menu on Mac OSX
 
 Version v0.4.6
 --------------
