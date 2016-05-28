@@ -1099,7 +1099,7 @@ def clean_elements(orig_list):
         >>> clean_elements(['a ', '\tb\t', 'c\n'])
         ['a', 'b', 'c']
     """
-    return [_.strip() for _ in orig_list]
+    return [_.strip().strip(';') for _ in orig_list]
 
 
 def get_clean_tree_str(tree_str):
@@ -1331,7 +1331,7 @@ def multi_calibration(tree_str, cali_tuple_list):
     # Print valid calibration information
     print('\n[Valid Calibrations]\n')
     for i, each_cali_tuple in enumerate(cali_tuple_list):
-        print('%4d |  %s' % (i + 1, ' ,'.join(each_cali_tuple)))
+        print('%4d |  %s' % (i + 1, ', '.join(each_cali_tuple)))
 
     # Do multiple calibrations
     for i, each_cali_tuple in enumerate(cali_tuple_list):
