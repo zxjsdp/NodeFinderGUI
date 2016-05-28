@@ -6,6 +6,8 @@ Version v0.4.7
 
 * FEATURE: Display valid calibration configs
 * BUGFIX: Right click menu on Mac OSX
+* BUGFIX: Check all species names from config lines in Newick tree before execute
+* BUGFIX: Remove semicolons in end of config lines
 
 Version v0.4.6
 --------------
