@@ -42,7 +42,7 @@ __author__ = 'Jin'
 # [Insert]:  b,c)>0.05<0.07,(d,e)))>0.1<0.2,(f,g))>0.
 # [Insert]:                   ->||<-
 # [Insert]:                 Insert Here
-INSERT_POSITION_HALF_SIZE = 40
+INSERT_POSITION_HALF_SIZE = 20
 
 # Use set(list()) rather than {} for Python2.6 compatibility
 NONE_TREE_NAME_SYMBOL_SET = set(
@@ -56,6 +56,13 @@ WITH_LABEL_EXISTS_SYMBOL_SET = set(
 WARNING_CALI_OR_LABEL_INFO_SYMBOL_SET = set(
     ['>', '<', '@', '#', '$', "'", '"', ':'])
 WARNING_BRANCH_LABEL_SYMBOL_SET = set(['@', '#', '$', "'", ':'])
+
+# Regular expression for finding all species names in Newick tree
+RE_FIND_ALL_SPECIES = r'[^(),;]+'
+# Character set which will not be the first char of a valid species name
+NON_SPECIES_NAME_STARTING_CHAR_SET = set(['#', ':', '>', '<', '/', '\\'])
+# Character set that may be in the middle of species name and a number
+NON_SPECIES_NAME_MIDDLE_CHAR_SET = set(['#', ':'])
 
 # ===========================================================
 # Options generally don't need to be changed
@@ -132,11 +139,6 @@ Documentation of %s (Ver. %s)
 """ % (GUI_TITLE, __version__)
 
 global_insertion_list_cache = {}
-
-
-class ConfigFileSyntaxError(SyntaxError):
-    """Error class for config file"""
-    pass
 
 
 def time_now():
@@ -330,8 +332,9 @@ class RightClickMenuForScrolledText(object):
 
     def _clear_all(self):
         """Clear all"""
-        isok = askokcancel('Clear All', 'Erase all text?', parent=self.parent,
-                           default='ok')
+        isok = tkMessageBox.askokcancel('Clear All', 'Erase all text?',
+                                        parent=self.parent,
+                                        default='ok')
         if isok:
             self.parent.delete('1.0', 'end')
 
@@ -1078,9 +1081,13 @@ class App(tk.Frame):
         tree_str = get_tree_str(self.tree_paste_area.get('1.0', 'end-1c'))
         calibration_list = get_cali_list(
             self.config_lines_area.get('1.0', 'end-1c'))
-        self.final_tree = multi_calibration(tree_str, calibration_list)
-        self.out_tree_area.delete('1.0', 'end')
-        self.out_tree_area.insert('end', self.final_tree)
+        if not calibration_list:
+            sys.stderr.write("No valid config lines or error in config lines!")
+        else:
+            self.final_tree = multi_calibration(tree_str, calibration_list)
+            if self.final_tree:
+                self.out_tree_area.delete('1.0', 'end')
+                self.out_tree_area.insert('end', self.final_tree)
 
     def hello(self):
         """Simple hello function for testing use."""
@@ -1096,7 +1103,7 @@ def clean_elements(orig_list):
         clean_list: Elements in clean list is striped and clean.
 
     [Example]
-        >>> clean_elements(['a ', '\tb\t', 'c\n'])
+        >>> clean_elements(['a ', '\tb\t', 'c; '])
         ['a', 'b', 'c']
     """
     return [_.strip().strip(';') for _ in orig_list]
@@ -1104,7 +1111,7 @@ def clean_elements(orig_list):
 
 def get_clean_tree_str(tree_str):
     """Remove all blanks and return a very clean tree string.
-    >>> get_clean_tree_str('((a ,((b, c), (d, e))), (f, g));'')
+    >>> get_clean_tree_str('((a ,((b, c), (d, e))), (f, g));')
     '((a,((b,c),(d,e))),(f,g));'
     """
     return tree_str.replace(' ', '').replace('\n', '').replace('\t', '')
@@ -1325,6 +1332,7 @@ def multi_calibration(tree_str, cali_tuple_list):
     """Do calibration for multiple calibration requests."""
     global global_insertion_list_cache
     global_insertion_list_cache = {}
+    species_names_from_tree_str = get_species_names_from_tree_str(tree_str)
     print('\n\n====================================================')
     print('                [ New Job: %s]' % time_now())
     print('====================================================')
@@ -1333,44 +1341,42 @@ def multi_calibration(tree_str, cali_tuple_list):
     for i, each_cali_tuple in enumerate(cali_tuple_list):
         print('%4d |  %s' % (i + 1, ', '.join(each_cali_tuple)))
 
-    # Do multiple calibrations
-    for i, each_cali_tuple in enumerate(cali_tuple_list):
-        if len(each_cali_tuple) == 3:
-            name_a, name_b, cali_or_clade_info = each_cali_tuple
-            print('\n')
-            print(THIN_BAR)
-            print('[%d]:  %s' % (i + 1, ', '.join(each_cali_tuple)))
-            print(THIN_BAR)
-            print('[Name A]:  ', name_a)
-            print('[Name B]:  ', name_b)
-            print('[ Info ]:  ', cali_or_clade_info)
-            for name in (name_a, name_b):
-                if name not in tree_str:
-                    raise ConfigFileSyntaxError('Name not in tree file:  ',
-                                                name)
-            if cali_or_clade_info[0] not in \
-                    WARNING_CALI_OR_LABEL_INFO_SYMBOL_SET:
-                print('\n[Warning]: Is this valid symbel?  %s     [ !!! ]\n' %
-                      cali_or_clade_info)
-            tree_str = single_calibration(tree_str, name_a, name_b,
-                                          cali_or_clade_info)
-        elif len(each_cali_tuple) == 2:
-            name_a, branch_label = each_cali_tuple
-            print('\n')
-            print(THIN_BAR)
-            print('[%d]:  %s' % (i + 1, ', '.join(each_cali_tuple)))
-            print(THIN_BAR)
-            print('[ Name ]:  ', name_a)
-            print('[ Info ]:  ', branch_label)
-            if name_a not in tree_str:
-                raise ConfigFileSyntaxError('name_a not in tree file:  ',
-                                            name_a)
-            if branch_label[0] not in WARNING_BRANCH_LABEL_SYMBOL_SET:
-                print('\n[Warning]: Is this valid symbel?  %s     [ !!! ]\n' %
-                      branch_label)
-            tree_str = add_single_branch_label(tree_str, name_a, branch_label)
-    final_tree = tree_str.replace(',', ', ')
-    return final_tree
+    # Check whether all species names from config lines are in Newick tree
+    if check_all_names_in_newick_tree(tree_str, cali_tuple_list):
+        # Do multiple calibrations
+        for i, each_cali_tuple in enumerate(cali_tuple_list):
+            if len(each_cali_tuple) == 3:
+                name_a, name_b, cali_or_clade_info = each_cali_tuple
+                print('\n')
+                print(THIN_BAR)
+                print('[%d]:  %s' % (i + 1, ', '.join(each_cali_tuple)))
+                print(THIN_BAR)
+                print('[Name A]:  ', name_a)
+                print('[Name B]:  ', name_b)
+                print('[ Info ]:  ', cali_or_clade_info)
+                if cali_or_clade_info[0] not in \
+                        WARNING_CALI_OR_LABEL_INFO_SYMBOL_SET:
+                    print('\n[Warning]: Is this valid symbel?  %s     [ !!! ]\n' %
+                          cali_or_clade_info)
+                tree_str = single_calibration(tree_str, name_a, name_b,
+                                              cali_or_clade_info)
+            elif len(each_cali_tuple) == 2:
+                name_a, branch_label = each_cali_tuple
+                print('\n')
+                print(THIN_BAR)
+                print('[%d]:  %s' % (i + 1, ', '.join(each_cali_tuple)))
+                print(THIN_BAR)
+                print('[ Name ]:  ', name_a)
+                print('[ Info ]:  ', branch_label)
+                if branch_label[0] not in WARNING_BRANCH_LABEL_SYMBOL_SET:
+                    print('\n[Warning]: Is this valid symbel?  %s     [ !!! ]\n' %
+                          branch_label)
+                tree_str = add_single_branch_label(tree_str, name_a, branch_label)
+        final_tree = tree_str.replace(',', ', ')
+        return final_tree
+    else:
+        sys.stderr.write("Please check config lines!\n")
+        return None
 
 
 def get_cali_list(raw_cali_content):
@@ -1383,16 +1389,11 @@ def get_cali_list(raw_cali_content):
             continue
         elements = clean_elements(line.split(','))
         if len(elements) not in [2, 3]:
-            # error_msg = (
-            #     '[Calibration lines]:  name_a, name_b, cali_info\n'
-            #     '[Branch label lines]: name, branch_label(#)\n'
-            #     '[Clade label lines]:  name_a, name_b, '
-            #     'clade_ladel')
-            # raise ConfigFileSyntaxError('Invalid calibration line [%d]: %s'
-            #                             % (i + 1, line) +
-            #                             'Usage:\n\n%s' % error_msg)
-            raise ConfigFileSyntaxError('Invalid line: [%d]: %s' % (i + 1, line))
-        tmp_cali_list.append(elements)
+            sys.stderr.write('Invalid config line (Line: %d): %s\n' %
+                             (i + 1, line))
+            return []
+        else:
+            tmp_cali_list.append(elements)
     return tmp_cali_list
 
 
@@ -1412,6 +1413,56 @@ def get_tree_str(raw_tree_content):
         else:
             tmp_tree_str += line
     return tmp_tree_str
+
+
+def get_species_names_from_tree_str(tree_str):
+    """Parse Newick tree string and return a list of species names."""
+    tree_str = get_clean_tree_str(tree_str)
+    if not tree_str:
+        return []
+    re_all_names = re.compile(RE_FIND_ALL_SPECIES)
+    all_names = re_all_names.findall(tree_str)
+    species_names = []
+    for i, name in enumerate(all_names):
+        name = name.strip()
+        if not name:
+            continue
+        if name[0] in NON_SPECIES_NAME_STARTING_CHAR_SET:
+            continue
+        if ':' in name:
+            species_names.append(name.split(':')[0])
+        if '#' in name:
+            species_names.append(name.split('#')[0])
+        elif len(name.split()) != 1:
+            continue
+        else:
+            species_names.append(name)
+    for each_char in NON_SPECIES_NAME_STARTING_CHAR_SET:
+        species_names = [_ for _ in all_names if each_char not in _]
+
+    return species_names
+
+
+def check_all_names_in_newick_tree(tree_str, cali_tuple_list):
+    """Check whether all names from config lines are in Newick tree."""
+    all_names_from_tree_str = get_species_names_from_tree_str(tree_str)
+    for index, each_tuple in enumerate(cali_tuple_list):
+        if len(each_tuple) == 3:
+            name_a, name_b = [_.strip() for _ in each_tuple[:2]]
+            for name in (name_a, name_b):
+                if name not in all_names_from_tree_str:
+                    sys.stderr.write(
+                        'Name not found in Newick tree: %s (Line: %s)\n' %
+                        (name, index+1))
+                    return False
+        elif len(each_tuple) == 2:
+            name = each_tuple[0].strip()
+            if name not in all_names_from_tree_str:
+                sys.stderr.write(
+                    'Name not found in Newick tree: %s (Line: %s)\n' %
+                    (name, index+1))
+                return False
+    return True
 
 
 def main():
