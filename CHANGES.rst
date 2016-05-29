@@ -4,40 +4,41 @@ Version History
 Version v0.4.7
 --------------
 
-* FEATURE: Display valid calibration configs
-* BUGFIX: Right click menu on Mac OSX
-* BUGFIX: Check all species names from config lines in Newick tree before execute
-* BUGFIX: Remove semicolons in end of config lines
+* Feature: Display valid calibration configs
+* Feature: Add new combobox widget for changing insertion postion display width
+* Bugfix: Right click menu on Mac OSX
+* Bugfix: Check all species names from config lines in Newick tree before execute
+* Bugfix: Remove semicolons in end of config lines
 
 Version v0.4.6
 --------------
 
-* BUGFIX: Fix display insertion point for 20 char width bug
+* Bugfix: Fix display insertion point for 20 char width bug
 
 Version v0.4.5
 --------------
 
-* FEATURE: Add read and save config file buttons
-* FEATURE: Add menubar and menu items
+* Feature: Add read and save config file buttons
+* Feature: Add menubar and menu items
 
 Version v0.4.4
 --------------
 
-* FEATURE: Add right click menu for most of the text are
+* Feature: Add right click menu for most of the text are
 
 Version v0.4.3
 --------------
 
-* IMPROVE: Remove unnecessary logic, improve performance
-* BUGFIX: Fix save as button for outcome and log
+* Improve: Remove unnecessary logic, improve performance
+* Bugfix: Fix save as button for outcome and log
 
 Version v0.4.2
 --------------
 
-* IMPROVE: Add screenshot to GitHub
+* Improve: Add screenshot to GitHub
 
 Version v0.4.1
 --------------
 
-* FEATURE: First public preview release.
-* BUGFIX: Fixed Python 3 compatibility.
+* Feature: First public preview release.
+* Bugfix: Fixed Python 3 compatibility.
