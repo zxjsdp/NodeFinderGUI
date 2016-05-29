@@ -1,7 +1,7 @@
 Version History
 ===============
 
-Version v0.4.7
+Version v0.5.0
 --------------
 
 * Feature: Display valid calibration configs
