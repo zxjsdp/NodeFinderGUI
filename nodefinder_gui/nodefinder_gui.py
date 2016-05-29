@@ -615,6 +615,15 @@ class App(tk.Frame):
         self.log_label = ttk.Label(self.log_pane, text='Results and Log',
                                    style='title.TLabel')
 
+        self.cali_display_width_lable = ttk.Label(
+            self.log_pane, text='Display width',
+            style='config.TLabel'
+        )
+
+        self.cali_display_width_combobox = ttk.Combobox(
+            self.log_pane, style='config.TCombobox')
+        self.cali_display_width_combobox.set(INSERT_POSITION_HALF_SIZE)
+
         # Save log button
         self.save_log_button = ttk.Button(
             self.log_pane,
@@ -692,7 +701,9 @@ class App(tk.Frame):
         self.log_label.grid(row=0, column=0, sticky='w')
         self.save_log_button.grid(row=0, column=1, sticky='we')
         self.clear_log_button.grid(row=0, column=2, sticky='we')
-        self.log_area.grid(row=1, column=0, columnspan=3, sticky='wens')
+        self.cali_display_width_lable.grid(row=1, column=1, sticky='we')
+        self.cali_display_width_combobox.grid(row=1, column=2, sticky='we')
+        self.log_area.grid(row=2, column=0, columnspan=3, sticky='wens')
 
     def row_and_column_configure(self):
         # +-------------------+-------------------+
@@ -743,7 +754,8 @@ class App(tk.Frame):
 
         # Log pane, Right Down
         self.log_pane.rowconfigure(0, weight=0)
-        self.log_pane.rowconfigure(1, weight=1)
+        self.log_pane.rowconfigure(1, weight=0)
+        self.log_pane.rowconfigure(2, weight=1)
         self.log_pane.columnconfigure(0, weight=1)
         self.log_pane.columnconfigure(1, weight=0)
         self.log_pane.columnconfigure(2, weight=0)
@@ -1076,8 +1088,17 @@ class App(tk.Frame):
         self.log_area.delete('1.0', 'end')
         self.log_area.configure(state='disabled')
 
+    def _apply_values_from_widgets(self):
+        global INSERT_POSITION_HALF_SIZE
+        insert_position_half_size_now = int(float(
+            self.cali_display_width_combobox.get()))
+        if insert_position_half_size_now != INSERT_POSITION_HALF_SIZE:
+            INSERT_POSITION_HALF_SIZE = insert_position_half_size_now
+
     def _main_work(self):
         """Do main job."""
+        self._apply_values_from_widgets()
+
         tree_str = get_tree_str(self.tree_paste_area.get('1.0', 'end-1c'))
         calibration_list = get_cali_list(
             self.config_lines_area.get('1.0', 'end-1c'))
