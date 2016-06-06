@@ -145,7 +145,11 @@ EN_DICT = {
         "RIGHT_MENU_PASTE": 'Paste',
         "RIGHT_MENU_DELETE": 'Delete',
         "RIGHT_MENU_SELECT": 'Select all',
+        "RIGHT_MENU_CLEAR": 'Clear all',
     },
+    "notice": {
+        "CLEAR_ALL_NOTICE": 'Erase all text?',
+    }
 }
 
 TEXT_DICT = EN_DICT
@@ -310,24 +314,37 @@ class RightClickMenuForScrolledText(object):
         # be hardcoded with our own functions to immitate the same
         # actions but there's no point except as a novice exercise
         # (which I recommend if you're a novice).
-        menu.add_command(label="Cut", command=self._cut)
-        menu.add_command(label="Copy", command=self._copy)
+        menu.add_command(
+            label=TEXT_DICT.get("buttons").get("RIGHT_MENU_CUT"),
+            command=self._cut)
+        menu.add_command(
+            label=TEXT_DICT.get("buttons").get("RIGHT_MENU_COPY"),
+            command=self._copy)
         # if there's string data in the clipboard then make the normal
         # Paste command.  otherwise disable it.
         if self._paste_string_state():
-            menu.add_command(label="Paste",
-                             command=self._paste_if_string_in_clipboard)
+            menu.add_command(
+                label=TEXT_DICT.get("buttons").get("RIGHT_MENU_PASTE"),
+                command=self._paste_if_string_in_clipboard)
         else:
-            menu.add_command(label="Paste", state='disable')
+            menu.add_command(
+                label=TEXT_DICT.get("buttons").get("RIGHT_MENU_PASTE"),
+                state='disable')
         # again, if there's no marked text then the Delete option is disabled.
-        menu.add_command(label="Delete", command=self._delete)
+        menu.add_command(
+            label=TEXT_DICT.get("buttons").get("RIGHT_MENU_DELETE"),
+            command=self._delete)
         # make things pretty with a horizontal separator
         menu.add_separator()
         # I don't know of if there's a virtual event for select all though
         # I did look in vain for documentation on -any- of Tkinter's
         # virtual events.  Regardless, the method itself is trivial.
-        menu.add_command(label="Select All", command=self._select_all)
-        menu.add_command(label="Clear All", command=self._clear_all)
+        menu.add_command(
+            label=TEXT_DICT.get("buttons").get("RIGHT_MENU_SELECT"),
+            command=self._select_all)
+        menu.add_command(
+            label=TEXT_DICT.get("buttons").get("RIGHT_MENU_CLEAR"),
+            command=self._clear_all)
         menu.post(event.x_root, event.y_root)
 
     def _cut(self):
@@ -363,9 +380,11 @@ class RightClickMenuForScrolledText(object):
 
     def _clear_all(self):
         """Clear all"""
-        isok = tkMessageBox.askokcancel('Clear All', 'Erase all text?',
-                                        parent=self.parent,
-                                        default='ok')
+        isok = tkMessageBox.askokcancel(
+            TEXT_DICT.get("buttons").get("RIGHT_MENU_CLEAR"),
+            TEXT_DICT.get("notice").get("CLEAR_ALL_NOTICE"),
+            parent=self.parent,
+            default='ok')
         if isok:
             self.parent.delete('1.0', 'end')
 
