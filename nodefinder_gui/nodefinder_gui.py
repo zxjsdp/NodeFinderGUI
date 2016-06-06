@@ -138,6 +138,19 @@ Documentation of %s (Ver. %s)
                         +-- g
 """ % (GUI_TITLE, __version__)
 
+EN_DICT = {
+    "buttons": {
+        "RIGHT_MENU_CUT": 'Cut',
+        "RIGHT_MENU_COPY": 'Copy',
+        "RIGHT_MENU_PASTE": 'Paste',
+        "RIGHT_MENU_DELETE": 'Delete',
+        "RIGHT_MENU_SELECT": 'Select all',
+    },
+}
+
+TEXT_DICT = EN_DICT
+
+
 global_insertion_list_cache = {}
 
 
@@ -183,32 +196,50 @@ class RightClickMenu(object):
         # check to see if there is any marked text in the entry widget.
         # if not then Cut and Copy are disabled.
         if not self.parent.selection_present():
-            menu.add_command(label="Cut", state='disable')
-            menu.add_command(label="Copy", state='disable')
+            menu.add_command(
+                label=TEXT_DICT.get('buttons').get("RIGHT_MENU_CUT"),
+                state='disable')
+            menu.add_command(
+                label=TEXT_DICT.get('buttons').get("RIGHT_MENU_COPY"),
+                state='disable')
         else:
             # use Tkinter's virtual events for brevity.  These could
             # be hardcoded with our own functions to immitate the same
             # actions but there's no point except as a novice exercise
             # (which I recommend if you're a novice).
-            menu.add_command(label="Cut", command=self._cut)
-            menu.add_command(label="Copy", command=self._copy)
+            menu.add_command(
+                label=TEXT_DICT.get("buttons").get("RIGHT_MENU_CUT"),
+                command=self._cut)
+            menu.add_command(
+                label=TEXT_DICT.get("buttons").get("RIGHT_MENU_COPY"),
+                command=self._copy)
         # if there's string data in the clipboard then make the normal
         # Paste command.  otherwise disable it.
         if self.paste_string_state():
-            menu.add_command(label="Paste", command=self._paste)
+            menu.add_command(
+                label=TEXT_DICT.get("buttons").get("RIGHT_MENU_PASTE"),
+                command=self._paste)
         else:
-            menu.add_command(label="Paste", state='disable')
+            menu.add_command(
+                label=TEXT_DICT.get("buttons").get("RIGHT_MENU_PASTE"),
+                state='disable')
         # again, if there's no marked text then the Delete option is disabled.
         if not self.parent.selection_present():
-            menu.add_command(label="Delete", state='disable')
+            menu.add_command(
+                label=TEXT_DICT.get("buttons").get("RIGHT_MENU_DELETE"),
+                state='disable')
         else:
-            menu.add_command(label="Delete", command=self._clear)
+            menu.add_command(
+                label=TEXT_DICT.get("buttons").get("RIGHT_MENU_DELETE"),
+                command=self._clear)
         # make things pretty with a horizontal separator
         menu.add_separator()
         # I don't know of if there's a virtual event for select all though
         # I did look in vain for documentation on -any- of Tkinter's
         # virtual events.  Regardless, the method itself is trivial.
-        menu.add_command(label="Select All", command=self._select_all)
+        menu.add_command(
+            label=TEXT_DICT.get("buttons").get("RIGHT_MENU_SELECT"),
+            command=self._select_all)
         menu.post(event.x_root, event.y_root)
 
     def _cut(self):
