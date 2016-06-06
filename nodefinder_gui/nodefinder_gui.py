@@ -44,6 +44,9 @@ __author__ = 'Jin'
 # [Insert]:                 Insert Here
 INSERT_POSITION_HALF_SIZE = 20
 
+LOG_AREA_FOREGROUND = '#FDF6E3'
+LOG_AREA_BACKGROUND = '#002B36'
+
 # Use set(list()) rather than {} for Python2.6 compatibility
 NONE_TREE_NAME_SYMBOL_SET = set(
     [',', ';', ')', '"', "'", '#', '$', '@', '>', '<'])
@@ -146,6 +149,35 @@ EN_DICT = {
         "RIGHT_MENU_DELETE": 'Delete',
         "RIGHT_MENU_SELECT": 'Select all',
         "RIGHT_MENU_CLEAR": 'Clear all',
+
+        "OPEN_TREE_BUTTON": "Open tree file...",
+        "CLEAR_BUTTON": "Clear",
+        "LOAD_HISTORY_BUTTON": 'Load History',
+
+        "EXECUTE_ALL_BUTTON": 'Execute All',
+        "READ_CONFIG_BUTTON": 'Read Config File...',
+        "SAVE_CONFIG_BUTTON": 'Save Config to File...',
+
+        "ADD_NEW_BUTTON": 'Add New',
+
+        "VIEW_ASCII_BUTTON": 'View As ASCII',
+        "QUICK_SAVE_BUTTON": 'Quick Save',
+        "SAVE_TREE_AS_BUTTON": 'Save New Tree As...',
+
+        "SAVE_LOG_AS_BUTTON": 'Save Log As...',
+
+    },
+    "labels": {
+        "TREE_PANE_LABEL": 'Origin Tree',
+        "CONFIG_PANE_LABEL": 'Configuration',
+        "OUTPUT_LABEL": 'Tree Output',
+        "LOG_PANE": 'Results and Log',
+
+        "NAME_A_LABEL": 'Name A',
+        "NAME_B_LABEL": 'Name B',
+        "INFO_LABEL": 'Info',
+
+        "DISPLAY_WIDTH_LABEL": 'Display width',
     },
     "notice": {
         "CLEAR_ALL_NOTICE": 'Erase all text?',
@@ -511,18 +543,18 @@ class App(tk.Frame):
         # +-------------------+-------------------+
         self.choose_tree_label = ttk.Label(
             self.tree_pane,
-            text='Origin Tree',
+            text=TEXT_DICT.get('labels').get('TREE_PANE_LABEL'),
             style='title.TLabel',
         )
 
         self.open_tree_file_button = ttk.Button(
             self.tree_pane,
-            text='Open Tree File...',
+            text=TEXT_DICT.get('buttons').get('OPEN_TREE_BUTTON'),
         )
 
         self.clear_tree_input = ttk.Button(
             self.tree_pane,
-            text='Clear',
+            text=TEXT_DICT.get('buttons').get('CLEAR_BUTTON'),
             style='clear.TButton',
         )
 
@@ -532,7 +564,7 @@ class App(tk.Frame):
 
         self.load_history_button = ttk.Button(
             self.tree_pane,
-            text='Load History',
+            text=TEXT_DICT.get('buttons').get('LOAD_HISTORY_BUTTON'),
         )
 
         self.tree_paste_area = st.ScrolledText(
@@ -551,43 +583,52 @@ class App(tk.Frame):
         # |                   |                   |
         # |                   |                   |
         # +-------------------+-------------------+
-        self.config_label = ttk.Label(self.config_pane, text='Configuration',
-                                      style='title.TLabel')
+        self.config_label = ttk.Label(
+            self.config_pane,
+            text=TEXT_DICT.get('labels').get('CONFIG_PANE_LABEL'),
+            style='title.TLabel'
+        )
 
         self.execute_button = ttk.Button(
             self.config_pane,
-            text='Execute All',
+            text=TEXT_DICT.get('buttons').get('EXECUTE_ALL_BUTTON'),
             style='execute.TButton',
         )
 
         self.clear_config_area_button = ttk.Button(
             self.config_pane,
-            text='Clear',
+            text=TEXT_DICT.get('buttons').get('CLEAR_BUTTON'),
             style='clear.TButton',
         )
 
         self.read_config_file_button = ttk.Button(
             self.config_pane,
-            text='Read Config File...',
+            text=TEXT_DICT.get('buttons').get('READ_CONFIG_BUTTON'),
         )
 
         self.save_config_to_file_button = ttk.Button(
             self.config_pane,
-            text='Save Config to File...',
+            text=TEXT_DICT.get('buttons').get('SAVE_CONFIG_BUTTON'),
         )
 
         self.name_a_label = ttk.Label(
-            self.config_pane, text='Name A', style='config.TLabel')
+            self.config_pane,
+            text=TEXT_DICT.get('labels').get('NAME_A_LABEL'),
+            style='config.TLabel')
 
         self.name_b_label = ttk.Label(
-            self.config_pane, text='Name B', style='config.TLabel')
+            self.config_pane,
+            text=TEXT_DICT.get('labels').get('NAME_B_LABEL'),
+            style='config.TLabel')
 
         self.info_label = ttk.Label(
-            self.config_pane, text='Info', style='config.TLabel')
+            self.config_pane,
+            text=TEXT_DICT.get('labels').get('INFO_LABEL'),
+            style='config.TLabel')
 
         self.add_newline_button = ttk.Button(
             self.config_pane,
-            text='Add New',
+            text=TEXT_DICT.get('buttons').get('ADD_NEW_BUTTON'),
             style='newline.TButton',
         )
 
@@ -618,29 +659,29 @@ class App(tk.Frame):
         # +-------------------+-------------------+
         self.out_tree_label = ttk.Label(
             self.out_tree_pane,
-            text='Tree Output',
+            text=TEXT_DICT.get('labels').get('OUTPUT_LABEL'),
             style='title.TLabel',
         )
 
         self.view_as_ascii_button = ttk.Button(
             self.out_tree_pane,
-            text='View As ASCII'
+            text=TEXT_DICT.get('buttons').get('VIEW_ASCII_BUTTON'),
         )
 
         self.save_current_dir_button = ttk.Button(
             self.out_tree_pane,
-            text='Quick Save',
+            text=TEXT_DICT.get('buttons').get('QUICK_SAVE_BUTTON'),
         )
 
         self.save_as_button = ttk.Button(
             self.out_tree_pane,
-            text='Save New Tree As...',
+            text=TEXT_DICT.get('buttons').get('SAVE_TREE_AS_BUTTON'),
         )
 
         # Clear out tree button
         self.clear_out_tree_button = ttk.Button(
             self.out_tree_pane,
-            text='Clear',
+            text=TEXT_DICT.get('buttons').get('CLEAR_BUTTON'),
             style='clear.TButton',
         )
         self.clear_out_tree_button.grid(row=0, column=4, sticky='we')
@@ -662,35 +703,39 @@ class App(tk.Frame):
         # |                   |                   |
         # |                   |                   |
         # +-------------------+-------------------+
-        self.log_label = ttk.Label(self.log_pane, text='Results and Log',
-                                   style='title.TLabel')
+        self.log_label = ttk.Label(
+            self.log_pane,
+            text=TEXT_DICT.get('labels').get('LOG_PANE'),
+            style='title.TLabel')
 
         self.cali_display_width_lable = ttk.Label(
-            self.log_pane, text='Display width',
+            self.log_pane,
+            text=TEXT_DICT.get('labels').get('DISPLAY_WIDTH_LABEL'),
             style='config.TLabel'
         )
 
         self.cali_display_width_combobox = ttk.Combobox(
-            self.log_pane, style='config.TCombobox')
+            self.log_pane,
+            style='config.TCombobox')
         self.cali_display_width_combobox.set(INSERT_POSITION_HALF_SIZE)
 
         # Save log button
         self.save_log_button = ttk.Button(
             self.log_pane,
-            text='Save Log As...',
+            text=TEXT_DICT.get('buttons').get('SAVE_LOG_AS_BUTTON'),
         )
 
         # Clear out tree button
         self.clear_log_button = ttk.Button(
             self.log_pane,
-            text='Clear',
+            text=TEXT_DICT.get('buttons').get('CLEAR_BUTTON'),
             style='clear.TButton',
         )
 
         self.log_area = st.ScrolledText(
             self.log_pane,
-            fg='#FDF6E3',
-            bg='#002B36',
+            fg=LOG_AREA_FOREGROUND,
+            bg=LOG_AREA_BACKGROUND,
             state='disabled',
         )
 
