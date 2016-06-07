@@ -73,6 +73,8 @@ NON_SPECIES_NAME_MIDDLE_CHAR_SET = set(['#', ':'])
 
 GUI_TITLE = "NodeFinder GUI"
 INIT_WINDOW_SIZE = '1200x700'
+FORMAT_STR_GUI_TITLE = '  %s (Ver %s)'
+FORMAT_STR_TIME = "  %d %b %Y,  %a %H:%M:%S"
 THIN_BAR = '~' * 50
 LONG_BAR = '=' * 50
 
@@ -141,6 +143,9 @@ Documentation of %s (Ver. %s)
                         +-- g
 """ % (GUI_TITLE, __version__)
 
+HELP = ('\nIf you need help, please check the menu bar:\n\n'
+        '   Help -> Documentation\n')
+
 EN_DICT = {
     "buttons": {
         "RIGHT_MENU_CUT": 'Cut',
@@ -179,8 +184,30 @@ EN_DICT = {
 
         "DISPLAY_WIDTH_LABEL": 'Display width',
     },
+    "menubar": {
+        "MENUBAR_OPEN": 'Open input tree file...',
+        "MENUBAR_SAVE_TO": 'Save output tree to file...',
+        "MENUBAR_SAVE_LOG": 'Save log to file...',
+        "MENUBAR_EXIT": 'Exit',
+        "MENUBAR_FILE_CASCADE": 'File',
+
+        "MENUBAR_OPEN_CONFIG": 'Open config file...',
+        "MENUBAR_SAVE_CONFIG": 'Save config to file...',
+        "MENUBAR_CONFIG_CASCADE": "Configs",
+
+        "MENUBAR_CUT": "Cut",
+        "MENUBAR_COPY": "Copy",
+        "MENUBAR_PASTE": "Paste",
+        "MENUBAR_DELETE": "Delete",
+        "MENUBAR_EDIT_CASCADE": 'Edit',
+
+        "MENUBAR_DOC": "Documentation",
+        "MENUBAR_ABOUT": "About",
+        "MENUBAR_HELP_CASCADE": "Help",
+    },
     "notice": {
         "CLEAR_ALL_NOTICE": 'Erase all text?',
+        "NO_STR_IN_CLIPBOARD": 'No string in clipboard!',
     }
 }
 
@@ -927,48 +954,75 @@ class App(tk.Frame):
 
         # File Menu
         file_menu = tk.Menu(menu_bar, tearoff=0)
-        file_menu.add_command(label='Open input tree file...',
-                              command=self._ask_open_file)
+        file_menu.add_command(
+            label=TEXT_DICT.get('menubar').get('MENUBAR_OPEN'),
+            command=self._ask_open_file)
         file_menu.add_separator()
-        file_menu.add_command(label='Save output tree to file...',
-                              command=self._ask_save_out_as_file)
-        file_menu.add_command(label='Save log to file...',
-                              command=self._ask_save_log_as_file)
+        file_menu.add_command(
+            label=TEXT_DICT.get('menubar').get('MENUBAR_SAVE_TO'),
+            command=self._ask_save_out_as_file)
+        file_menu.add_command(
+            label=TEXT_DICT.get('menubar').get('MENUBAR_SAVE_LOG'),
+            command=self._ask_save_log_as_file)
         file_menu.add_separator()
-        file_menu.add_command(label='Exit', command=self.quit)
-        menu_bar.add_cascade(label='File', menu=file_menu)
+        file_menu.add_command(
+            label=TEXT_DICT.get('menubar').get('MENUBAR_EXIT'),
+            command=self.quit)
+        menu_bar.add_cascade(
+            label=TEXT_DICT.get('menubar').get('MENUBAR_FILE_CASCADE'),
+            menu=file_menu)
 
         # Configure Menu
         configs_menu = tk.Menu(menu_bar, tearoff=0)
-        configs_menu.add_command(label='Open config file...',
-                                 command=self._read_config_from_file)
-        configs_menu.add_command(label='Save config to file...',
-                                 command=self._save_config_to_file)
-        menu_bar.add_cascade(label="Configs", menu=configs_menu)
+        configs_menu.add_command(
+            label=TEXT_DICT.get('menubar').get('MENUBAR_OPEN_CONFIG'),
+            command=self._read_config_from_file)
+        configs_menu.add_command(
+            label=TEXT_DICT.get('menubar').get('MENUBAR_SAVE_CONFIG'),
+            command=self._save_config_to_file)
+        menu_bar.add_cascade(
+            label=TEXT_DICT.get('menubar').get('MENUBAR_CONFIG_CASCADE'),
+            menu=configs_menu)
 
         # Edit Menu
         edit_menu = tk.Menu(menu_bar, tearoff=0)
-        edit_menu.add_command(label="Cut", command=self._cut)
-        edit_menu.add_command(label="Copy", command=self._copy)
+        edit_menu.add_command(
+            label=TEXT_DICT.get('menubar').get('MENUBAR_CUT'),
+            command=self._cut)
+        edit_menu.add_command(
+            label=TEXT_DICT.get('menubar').get('MENUBAR_COPY'),
+            command=self._copy)
         # try:
         #     edit_menu.add_command(label="Paste", command=self._paste)
         # except Exception:
         #     pass
         if self._paste_string_state():
-            edit_menu.add_command(label="Paste", command=self._paste)
+            edit_menu.add_command(
+                label=TEXT_DICT.get('menubar').get("MENUBAR_PASTE"),
+                command=self._paste)
         else:
             edit_menu.add_command(
-                label='Paste',
-                command=lambda: print('No string in clipboard!'))
-        edit_menu.add_command(label="Delete", command=self._delete)
-        menu_bar.add_cascade(label="Edit", menu=edit_menu)
+                label=TEXT_DICT.get('menubar').get("MENUBAR_PASTE"),
+                command=lambda: print(TEXT_DICT.get(
+                    'notice').get('NO_STR_IN_CLIPBOARD')))
+        edit_menu.add_command(
+            label=TEXT_DICT.get('menubar').get('MENUBAR_DELETE'),
+            command=self._delete)
+        menu_bar.add_cascade(
+            label=TEXT_DICT.get('menubar').get('MENUBAR_EDIT_CASCADE'),
+            menu=edit_menu)
 
         # Help Menu
         help_menu = tk.Menu(menu_bar, tearoff=0)
-        help_menu.add_command(label="Documentation",
-                              command=self.display_documentation)
-        help_menu.add_command(label="About", command=self.display_about)
-        menu_bar.add_cascade(label="Help", menu=help_menu)
+        help_menu.add_command(
+            label=TEXT_DICT.get('menubar').get('MENUBAR_DOC'),
+            command=self.display_documentation)
+        help_menu.add_command(
+            label=TEXT_DICT.get('menubar').get('MENUBAR_ABOUT'),
+            command=self.display_about)
+        menu_bar.add_cascade(
+            label=TEXT_DICT.get('menubar').get('MENUBAR_HELP_CASCADE'),
+            menu=help_menu)
 
         self.master.config(menu=menu_bar)
 
@@ -976,17 +1030,6 @@ class App(tk.Frame):
         """Display documentation for menu bar about button."""
         print(LONG_BAR)
         print(DOCUMENTATION)
-        # print('Documentation of %s (Ver. %s):\n' % (GUI_TITLE, __version__))
-        # print('[Basic Usage]')
-        # print('  1. Open Newick tree file')
-        # print('  2. Input calibration configs')
-        # print('  3. Press "Execute All" button to execute\n')
-        # print('[Config Syntax]')
-        # print('  name_a, name_b, calibration_infomation_1')
-        # print('  name_c, name_d, calibration_infomation_2')
-        # print('  name_a, name_b, clade_label_information')
-        # print('  name, branch_label_information')
-        # print('  ..., ..., ...')
         print(LONG_BAR)
 
     def display_about(self):
@@ -1000,12 +1043,10 @@ class App(tk.Frame):
         sys.stderr = TextEmit(self.log_area, 'stderr')
 
         print(LONG_BAR)
-        print('  %s (Ver %s)' % (GUI_TITLE, __version__))
-        print(time.strftime("  %d %b %Y,  %a %H:%M:%S",
-                            time.localtime()))
+        print(FORMAT_STR_GUI_TITLE % (GUI_TITLE, __version__))
+        print(time.strftime(FORMAT_STR_TIME, time.localtime()))
         print(LONG_BAR)
-        print('\nIf you need help, please check the menu bar:\n\n'
-              '   Help -> Documentation\n')
+        print(HELP)
 
     def _copy(self):
         # self.master.clipboard_clear()
