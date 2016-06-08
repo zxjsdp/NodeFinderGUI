@@ -211,6 +211,71 @@ EN_DICT = {
     }
 }
 
+CN_DICT = {
+    "buttons": {
+        "RIGHT_MENU_CUT": '剪切',
+        "RIGHT_MENU_COPY": '复制',
+        "RIGHT_MENU_PASTE": '粘贴',
+        "RIGHT_MENU_DELETE": '删除',
+        "RIGHT_MENU_SELECT": '全选',
+        "RIGHT_MENU_CLEAR": '全部清除',
+
+        "OPEN_TREE_BUTTON": "打开树文件...",
+        "CLEAR_BUTTON": "清空",
+        "LOAD_HISTORY_BUTTON": '读取历史文件',
+
+        "EXECUTE_ALL_BUTTON": '执行',
+        "READ_CONFIG_BUTTON": '读取配置文件...',
+        "SAVE_CONFIG_BUTTON": '配置文件另存为...',
+
+        "ADD_NEW_BUTTON": '增加新配置行',
+
+        "VIEW_ASCII_BUTTON": '使用ASCII方式查看',
+        "QUICK_SAVE_BUTTON": '结果快速存储',
+        "SAVE_TREE_AS_BUTTON": '结果另存为...',
+
+        "SAVE_LOG_AS_BUTTON": 'Log另存为...',
+
+    },
+    "labels": {
+        "TREE_PANE_LABEL": '原始树窗口',
+        "CONFIG_PANE_LABEL": '配置窗口',
+        "OUTPUT_LABEL": '输出文件窗口',
+        "LOG_PANE": '结果窗口',
+
+        "NAME_A_LABEL": '物种名 A',
+        "NAME_B_LABEL": '物种名 B',
+        "INFO_LABEL": '标定信息',
+
+        "DISPLAY_WIDTH_LABEL": '展示宽度',
+    },
+    "menubar": {
+        "MENUBAR_OPEN": '打开树文件...',
+        "MENUBAR_SAVE_TO": '结果另存为...',
+        "MENUBAR_SAVE_LOG": 'Log另存为...',
+        "MENUBAR_EXIT": '退出',
+        "MENUBAR_FILE_CASCADE": '文件',
+
+        "MENUBAR_OPEN_CONFIG": '打开配置文件...',
+        "MENUBAR_SAVE_CONFIG": '配置文件另存为...',
+        "MENUBAR_CONFIG_CASCADE": "配置",
+
+        "MENUBAR_CUT": "剪切",
+        "MENUBAR_COPY": "复制",
+        "MENUBAR_PASTE": "粘贴",
+        "MENUBAR_DELETE": "删除",
+        "MENUBAR_EDIT_CASCADE": '编辑',
+
+        "MENUBAR_DOC": "帮助",
+        "MENUBAR_ABOUT": "关于",
+        "MENUBAR_HELP_CASCADE": "帮助",
+    },
+    "notice": {
+        "CLEAR_ALL_NOTICE": '清空所有？',
+        "NO_STR_IN_CLIPBOARD": '剪切板中没有可粘贴内容！',
+    }
+}
+
 TEXT_DICT = EN_DICT
 
 
