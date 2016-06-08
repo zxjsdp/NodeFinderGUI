@@ -44,6 +44,9 @@ __author__ = 'Jin'
 # [Insert]:                 Insert Here
 INSERT_POSITION_HALF_SIZE = 20
 
+LOG_AREA_FOREGROUND = '#FDF6E3'
+LOG_AREA_BACKGROUND = '#002B36'
+
 # Use set(list()) rather than {} for Python2.6 compatibility
 NONE_TREE_NAME_SYMBOL_SET = set(
     [',', ';', ')', '"', "'", '#', '$', '@', '>', '<'])
@@ -70,6 +73,8 @@ NON_SPECIES_NAME_MIDDLE_CHAR_SET = set(['#', ':'])
 
 GUI_TITLE = "NodeFinder GUI"
 INIT_WINDOW_SIZE = '1200x700'
+FORMAT_STR_GUI_TITLE = '  %s (Ver %s)'
+FORMAT_STR_TIME = "  %d %b %Y,  %a %H:%M:%S"
 THIN_BAR = '~' * 50
 LONG_BAR = '=' * 50
 
@@ -138,6 +143,142 @@ Documentation of %s (Ver. %s)
                         +-- g
 """ % (GUI_TITLE, __version__)
 
+HELP = ('\nIf you need help, please check the menu bar:\n\n'
+        '   Help -> Documentation\n')
+
+EN_DICT = {
+    "buttons": {
+        "RIGHT_MENU_CUT": 'Cut',
+        "RIGHT_MENU_COPY": 'Copy',
+        "RIGHT_MENU_PASTE": 'Paste',
+        "RIGHT_MENU_DELETE": 'Delete',
+        "RIGHT_MENU_SELECT": 'Select all',
+        "RIGHT_MENU_CLEAR": 'Clear all',
+
+        "OPEN_TREE_BUTTON": "Open tree file...",
+        "CLEAR_BUTTON": "Clear",
+        "LOAD_HISTORY_BUTTON": 'Load History',
+
+        "EXECUTE_ALL_BUTTON": 'Execute All',
+        "READ_CONFIG_BUTTON": 'Read Config File...',
+        "SAVE_CONFIG_BUTTON": 'Save Config to File...',
+
+        "ADD_NEW_BUTTON": 'Add New',
+
+        "VIEW_ASCII_BUTTON": 'View As ASCII',
+        "QUICK_SAVE_BUTTON": 'Quick Save',
+        "SAVE_TREE_AS_BUTTON": 'Save New Tree As...',
+
+        "SAVE_LOG_AS_BUTTON": 'Save Log As...',
+
+    },
+    "labels": {
+        "TREE_PANE_LABEL": 'Origin Tree',
+        "CONFIG_PANE_LABEL": 'Configuration',
+        "OUTPUT_LABEL": 'Tree Output',
+        "LOG_PANE": 'Results and Log',
+
+        "NAME_A_LABEL": 'Name A',
+        "NAME_B_LABEL": 'Name B',
+        "INFO_LABEL": 'Info',
+
+        "DISPLAY_WIDTH_LABEL": 'Display width',
+    },
+    "menubar": {
+        "MENUBAR_OPEN": 'Open input tree file...',
+        "MENUBAR_SAVE_TO": 'Save output tree to file...',
+        "MENUBAR_SAVE_LOG": 'Save log to file...',
+        "MENUBAR_EXIT": 'Exit',
+        "MENUBAR_FILE_CASCADE": 'File',
+
+        "MENUBAR_OPEN_CONFIG": 'Open config file...',
+        "MENUBAR_SAVE_CONFIG": 'Save config to file...',
+        "MENUBAR_CONFIG_CASCADE": "Configs",
+
+        "MENUBAR_CUT": "Cut",
+        "MENUBAR_COPY": "Copy",
+        "MENUBAR_PASTE": "Paste",
+        "MENUBAR_DELETE": "Delete",
+        "MENUBAR_EDIT_CASCADE": 'Edit',
+
+        "MENUBAR_DOC": "Documentation",
+        "MENUBAR_ABOUT": "About",
+        "MENUBAR_HELP_CASCADE": "Help",
+    },
+    "notice": {
+        "CLEAR_ALL_NOTICE": 'Erase all text?',
+        "NO_STR_IN_CLIPBOARD": 'No string in clipboard!',
+    }
+}
+
+CN_DICT = {
+    "buttons": {
+        "RIGHT_MENU_CUT": '剪切',
+        "RIGHT_MENU_COPY": '复制',
+        "RIGHT_MENU_PASTE": '粘贴',
+        "RIGHT_MENU_DELETE": '删除',
+        "RIGHT_MENU_SELECT": '全选',
+        "RIGHT_MENU_CLEAR": '全部清除',
+
+        "OPEN_TREE_BUTTON": "打开树文件...",
+        "CLEAR_BUTTON": "清空",
+        "LOAD_HISTORY_BUTTON": '读取历史文件',
+
+        "EXECUTE_ALL_BUTTON": '执行',
+        "READ_CONFIG_BUTTON": '读取配置文件...',
+        "SAVE_CONFIG_BUTTON": '配置文件另存为...',
+
+        "ADD_NEW_BUTTON": '增加新配置行',
+
+        "VIEW_ASCII_BUTTON": '使用ASCII方式查看',
+        "QUICK_SAVE_BUTTON": '结果快速存储',
+        "SAVE_TREE_AS_BUTTON": '结果另存为...',
+
+        "SAVE_LOG_AS_BUTTON": 'Log另存为...',
+
+    },
+    "labels": {
+        "TREE_PANE_LABEL": '原始树窗口',
+        "CONFIG_PANE_LABEL": '配置窗口',
+        "OUTPUT_LABEL": '输出文件窗口',
+        "LOG_PANE": '结果窗口',
+
+        "NAME_A_LABEL": '物种名 A',
+        "NAME_B_LABEL": '物种名 B',
+        "INFO_LABEL": '标定信息',
+
+        "DISPLAY_WIDTH_LABEL": '展示宽度',
+    },
+    "menubar": {
+        "MENUBAR_OPEN": '打开树文件...',
+        "MENUBAR_SAVE_TO": '结果另存为...',
+        "MENUBAR_SAVE_LOG": 'Log另存为...',
+        "MENUBAR_EXIT": '退出',
+        "MENUBAR_FILE_CASCADE": '文件',
+
+        "MENUBAR_OPEN_CONFIG": '打开配置文件...',
+        "MENUBAR_SAVE_CONFIG": '配置文件另存为...',
+        "MENUBAR_CONFIG_CASCADE": "配置",
+
+        "MENUBAR_CUT": "剪切",
+        "MENUBAR_COPY": "复制",
+        "MENUBAR_PASTE": "粘贴",
+        "MENUBAR_DELETE": "删除",
+        "MENUBAR_EDIT_CASCADE": '编辑',
+
+        "MENUBAR_DOC": "帮助",
+        "MENUBAR_ABOUT": "关于",
+        "MENUBAR_HELP_CASCADE": "帮助",
+    },
+    "notice": {
+        "CLEAR_ALL_NOTICE": '清空所有？',
+        "NO_STR_IN_CLIPBOARD": '剪切板中没有可粘贴内容！',
+    }
+}
+
+TEXT_DICT = EN_DICT
+
+
 global_insertion_list_cache = {}
 
 
@@ -183,32 +324,50 @@ class RightClickMenu(object):
         # check to see if there is any marked text in the entry widget.
         # if not then Cut and Copy are disabled.
         if not self.parent.selection_present():
-            menu.add_command(label="Cut", state='disable')
-            menu.add_command(label="Copy", state='disable')
+            menu.add_command(
+                label=TEXT_DICT.get('buttons').get("RIGHT_MENU_CUT"),
+                state='disable')
+            menu.add_command(
+                label=TEXT_DICT.get('buttons').get("RIGHT_MENU_COPY"),
+                state='disable')
         else:
             # use Tkinter's virtual events for brevity.  These could
             # be hardcoded with our own functions to immitate the same
             # actions but there's no point except as a novice exercise
             # (which I recommend if you're a novice).
-            menu.add_command(label="Cut", command=self._cut)
-            menu.add_command(label="Copy", command=self._copy)
+            menu.add_command(
+                label=TEXT_DICT.get("buttons").get("RIGHT_MENU_CUT"),
+                command=self._cut)
+            menu.add_command(
+                label=TEXT_DICT.get("buttons").get("RIGHT_MENU_COPY"),
+                command=self._copy)
         # if there's string data in the clipboard then make the normal
         # Paste command.  otherwise disable it.
         if self.paste_string_state():
-            menu.add_command(label="Paste", command=self._paste)
+            menu.add_command(
+                label=TEXT_DICT.get("buttons").get("RIGHT_MENU_PASTE"),
+                command=self._paste)
         else:
-            menu.add_command(label="Paste", state='disable')
+            menu.add_command(
+                label=TEXT_DICT.get("buttons").get("RIGHT_MENU_PASTE"),
+                state='disable')
         # again, if there's no marked text then the Delete option is disabled.
         if not self.parent.selection_present():
-            menu.add_command(label="Delete", state='disable')
+            menu.add_command(
+                label=TEXT_DICT.get("buttons").get("RIGHT_MENU_DELETE"),
+                state='disable')
         else:
-            menu.add_command(label="Delete", command=self._clear)
+            menu.add_command(
+                label=TEXT_DICT.get("buttons").get("RIGHT_MENU_DELETE"),
+                command=self._clear)
         # make things pretty with a horizontal separator
         menu.add_separator()
         # I don't know of if there's a virtual event for select all though
         # I did look in vain for documentation on -any- of Tkinter's
         # virtual events.  Regardless, the method itself is trivial.
-        menu.add_command(label="Select All", command=self._select_all)
+        menu.add_command(
+            label=TEXT_DICT.get("buttons").get("RIGHT_MENU_SELECT"),
+            command=self._select_all)
         menu.post(event.x_root, event.y_root)
 
     def _cut(self):
@@ -279,24 +438,37 @@ class RightClickMenuForScrolledText(object):
         # be hardcoded with our own functions to immitate the same
         # actions but there's no point except as a novice exercise
         # (which I recommend if you're a novice).
-        menu.add_command(label="Cut", command=self._cut)
-        menu.add_command(label="Copy", command=self._copy)
+        menu.add_command(
+            label=TEXT_DICT.get("buttons").get("RIGHT_MENU_CUT"),
+            command=self._cut)
+        menu.add_command(
+            label=TEXT_DICT.get("buttons").get("RIGHT_MENU_COPY"),
+            command=self._copy)
         # if there's string data in the clipboard then make the normal
         # Paste command.  otherwise disable it.
         if self._paste_string_state():
-            menu.add_command(label="Paste",
-                             command=self._paste_if_string_in_clipboard)
+            menu.add_command(
+                label=TEXT_DICT.get("buttons").get("RIGHT_MENU_PASTE"),
+                command=self._paste_if_string_in_clipboard)
         else:
-            menu.add_command(label="Paste", state='disable')
+            menu.add_command(
+                label=TEXT_DICT.get("buttons").get("RIGHT_MENU_PASTE"),
+                state='disable')
         # again, if there's no marked text then the Delete option is disabled.
-        menu.add_command(label="Delete", command=self._delete)
+        menu.add_command(
+            label=TEXT_DICT.get("buttons").get("RIGHT_MENU_DELETE"),
+            command=self._delete)
         # make things pretty with a horizontal separator
         menu.add_separator()
         # I don't know of if there's a virtual event for select all though
         # I did look in vain for documentation on -any- of Tkinter's
         # virtual events.  Regardless, the method itself is trivial.
-        menu.add_command(label="Select All", command=self._select_all)
-        menu.add_command(label="Clear All", command=self._clear_all)
+        menu.add_command(
+            label=TEXT_DICT.get("buttons").get("RIGHT_MENU_SELECT"),
+            command=self._select_all)
+        menu.add_command(
+            label=TEXT_DICT.get("buttons").get("RIGHT_MENU_CLEAR"),
+            command=self._clear_all)
         menu.post(event.x_root, event.y_root)
 
     def _cut(self):
@@ -332,9 +504,11 @@ class RightClickMenuForScrolledText(object):
 
     def _clear_all(self):
         """Clear all"""
-        isok = tkMessageBox.askokcancel('Clear All', 'Erase all text?',
-                                        parent=self.parent,
-                                        default='ok')
+        isok = tkMessageBox.askokcancel(
+            TEXT_DICT.get("buttons").get("RIGHT_MENU_CLEAR"),
+            TEXT_DICT.get("notice").get("CLEAR_ALL_NOTICE"),
+            parent=self.parent,
+            default='ok')
         if isok:
             self.parent.delete('1.0', 'end')
 
@@ -461,18 +635,18 @@ class App(tk.Frame):
         # +-------------------+-------------------+
         self.choose_tree_label = ttk.Label(
             self.tree_pane,
-            text='Origin Tree',
+            text=TEXT_DICT.get('labels').get('TREE_PANE_LABEL'),
             style='title.TLabel',
         )
 
         self.open_tree_file_button = ttk.Button(
             self.tree_pane,
-            text='Open Tree File...',
+            text=TEXT_DICT.get('buttons').get('OPEN_TREE_BUTTON'),
         )
 
         self.clear_tree_input = ttk.Button(
             self.tree_pane,
-            text='Clear',
+            text=TEXT_DICT.get('buttons').get('CLEAR_BUTTON'),
             style='clear.TButton',
         )
 
@@ -482,7 +656,7 @@ class App(tk.Frame):
 
         self.load_history_button = ttk.Button(
             self.tree_pane,
-            text='Load History',
+            text=TEXT_DICT.get('buttons').get('LOAD_HISTORY_BUTTON'),
         )
 
         self.tree_paste_area = st.ScrolledText(
@@ -501,43 +675,52 @@ class App(tk.Frame):
         # |                   |                   |
         # |                   |                   |
         # +-------------------+-------------------+
-        self.config_label = ttk.Label(self.config_pane, text='Configuration',
-                                      style='title.TLabel')
+        self.config_label = ttk.Label(
+            self.config_pane,
+            text=TEXT_DICT.get('labels').get('CONFIG_PANE_LABEL'),
+            style='title.TLabel'
+        )
 
         self.execute_button = ttk.Button(
             self.config_pane,
-            text='Execute All',
+            text=TEXT_DICT.get('buttons').get('EXECUTE_ALL_BUTTON'),
             style='execute.TButton',
         )
 
         self.clear_config_area_button = ttk.Button(
             self.config_pane,
-            text='Clear',
+            text=TEXT_DICT.get('buttons').get('CLEAR_BUTTON'),
             style='clear.TButton',
         )
 
         self.read_config_file_button = ttk.Button(
             self.config_pane,
-            text='Read Config File...',
+            text=TEXT_DICT.get('buttons').get('READ_CONFIG_BUTTON'),
         )
 
         self.save_config_to_file_button = ttk.Button(
             self.config_pane,
-            text='Save Config to File...',
+            text=TEXT_DICT.get('buttons').get('SAVE_CONFIG_BUTTON'),
         )
 
         self.name_a_label = ttk.Label(
-            self.config_pane, text='Name A', style='config.TLabel')
+            self.config_pane,
+            text=TEXT_DICT.get('labels').get('NAME_A_LABEL'),
+            style='config.TLabel')
 
         self.name_b_label = ttk.Label(
-            self.config_pane, text='Name B', style='config.TLabel')
+            self.config_pane,
+            text=TEXT_DICT.get('labels').get('NAME_B_LABEL'),
+            style='config.TLabel')
 
         self.info_label = ttk.Label(
-            self.config_pane, text='Info', style='config.TLabel')
+            self.config_pane,
+            text=TEXT_DICT.get('labels').get('INFO_LABEL'),
+            style='config.TLabel')
 
         self.add_newline_button = ttk.Button(
             self.config_pane,
-            text='Add New',
+            text=TEXT_DICT.get('buttons').get('ADD_NEW_BUTTON'),
             style='newline.TButton',
         )
 
@@ -568,29 +751,29 @@ class App(tk.Frame):
         # +-------------------+-------------------+
         self.out_tree_label = ttk.Label(
             self.out_tree_pane,
-            text='Tree Output',
+            text=TEXT_DICT.get('labels').get('OUTPUT_LABEL'),
             style='title.TLabel',
         )
 
         self.view_as_ascii_button = ttk.Button(
             self.out_tree_pane,
-            text='View As ASCII'
+            text=TEXT_DICT.get('buttons').get('VIEW_ASCII_BUTTON'),
         )
 
         self.save_current_dir_button = ttk.Button(
             self.out_tree_pane,
-            text='Quick Save',
+            text=TEXT_DICT.get('buttons').get('QUICK_SAVE_BUTTON'),
         )
 
         self.save_as_button = ttk.Button(
             self.out_tree_pane,
-            text='Save New Tree As...',
+            text=TEXT_DICT.get('buttons').get('SAVE_TREE_AS_BUTTON'),
         )
 
         # Clear out tree button
         self.clear_out_tree_button = ttk.Button(
             self.out_tree_pane,
-            text='Clear',
+            text=TEXT_DICT.get('buttons').get('CLEAR_BUTTON'),
             style='clear.TButton',
         )
         self.clear_out_tree_button.grid(row=0, column=4, sticky='we')
@@ -612,35 +795,39 @@ class App(tk.Frame):
         # |                   |                   |
         # |                   |                   |
         # +-------------------+-------------------+
-        self.log_label = ttk.Label(self.log_pane, text='Results and Log',
-                                   style='title.TLabel')
+        self.log_label = ttk.Label(
+            self.log_pane,
+            text=TEXT_DICT.get('labels').get('LOG_PANE'),
+            style='title.TLabel')
 
         self.cali_display_width_lable = ttk.Label(
-            self.log_pane, text='Display width',
+            self.log_pane,
+            text=TEXT_DICT.get('labels').get('DISPLAY_WIDTH_LABEL'),
             style='config.TLabel'
         )
 
         self.cali_display_width_combobox = ttk.Combobox(
-            self.log_pane, style='config.TCombobox')
+            self.log_pane,
+            style='config.TCombobox')
         self.cali_display_width_combobox.set(INSERT_POSITION_HALF_SIZE)
 
         # Save log button
         self.save_log_button = ttk.Button(
             self.log_pane,
-            text='Save Log As...',
+            text=TEXT_DICT.get('buttons').get('SAVE_LOG_AS_BUTTON'),
         )
 
         # Clear out tree button
         self.clear_log_button = ttk.Button(
             self.log_pane,
-            text='Clear',
+            text=TEXT_DICT.get('buttons').get('CLEAR_BUTTON'),
             style='clear.TButton',
         )
 
         self.log_area = st.ScrolledText(
             self.log_pane,
-            fg='#FDF6E3',
-            bg='#002B36',
+            fg=LOG_AREA_FOREGROUND,
+            bg=LOG_AREA_BACKGROUND,
             state='disabled',
         )
 
@@ -832,48 +1019,75 @@ class App(tk.Frame):
 
         # File Menu
         file_menu = tk.Menu(menu_bar, tearoff=0)
-        file_menu.add_command(label='Open input tree file...',
-                              command=self._ask_open_file)
+        file_menu.add_command(
+            label=TEXT_DICT.get('menubar').get('MENUBAR_OPEN'),
+            command=self._ask_open_file)
         file_menu.add_separator()
-        file_menu.add_command(label='Save output tree to file...',
-                              command=self._ask_save_out_as_file)
-        file_menu.add_command(label='Save log to file...',
-                              command=self._ask_save_log_as_file)
+        file_menu.add_command(
+            label=TEXT_DICT.get('menubar').get('MENUBAR_SAVE_TO'),
+            command=self._ask_save_out_as_file)
+        file_menu.add_command(
+            label=TEXT_DICT.get('menubar').get('MENUBAR_SAVE_LOG'),
+            command=self._ask_save_log_as_file)
         file_menu.add_separator()
-        file_menu.add_command(label='Exit', command=self.quit)
-        menu_bar.add_cascade(label='File', menu=file_menu)
+        file_menu.add_command(
+            label=TEXT_DICT.get('menubar').get('MENUBAR_EXIT'),
+            command=self.quit)
+        menu_bar.add_cascade(
+            label=TEXT_DICT.get('menubar').get('MENUBAR_FILE_CASCADE'),
+            menu=file_menu)
 
         # Configure Menu
         configs_menu = tk.Menu(menu_bar, tearoff=0)
-        configs_menu.add_command(label='Open config file...',
-                                 command=self._read_config_from_file)
-        configs_menu.add_command(label='Save config to file...',
-                                 command=self._save_config_to_file)
-        menu_bar.add_cascade(label="Configs", menu=configs_menu)
+        configs_menu.add_command(
+            label=TEXT_DICT.get('menubar').get('MENUBAR_OPEN_CONFIG'),
+            command=self._read_config_from_file)
+        configs_menu.add_command(
+            label=TEXT_DICT.get('menubar').get('MENUBAR_SAVE_CONFIG'),
+            command=self._save_config_to_file)
+        menu_bar.add_cascade(
+            label=TEXT_DICT.get('menubar').get('MENUBAR_CONFIG_CASCADE'),
+            menu=configs_menu)
 
         # Edit Menu
         edit_menu = tk.Menu(menu_bar, tearoff=0)
-        edit_menu.add_command(label="Cut", command=self._cut)
-        edit_menu.add_command(label="Copy", command=self._copy)
+        edit_menu.add_command(
+            label=TEXT_DICT.get('menubar').get('MENUBAR_CUT'),
+            command=self._cut)
+        edit_menu.add_command(
+            label=TEXT_DICT.get('menubar').get('MENUBAR_COPY'),
+            command=self._copy)
         # try:
         #     edit_menu.add_command(label="Paste", command=self._paste)
         # except Exception:
         #     pass
         if self._paste_string_state():
-            edit_menu.add_command(label="Paste", command=self._paste)
+            edit_menu.add_command(
+                label=TEXT_DICT.get('menubar').get("MENUBAR_PASTE"),
+                command=self._paste)
         else:
             edit_menu.add_command(
-                label='Paste',
-                command=lambda: print('No string in clipboard!'))
-        edit_menu.add_command(label="Delete", command=self._delete)
-        menu_bar.add_cascade(label="Edit", menu=edit_menu)
+                label=TEXT_DICT.get('menubar').get("MENUBAR_PASTE"),
+                command=lambda: print(TEXT_DICT.get(
+                    'notice').get('NO_STR_IN_CLIPBOARD')))
+        edit_menu.add_command(
+            label=TEXT_DICT.get('menubar').get('MENUBAR_DELETE'),
+            command=self._delete)
+        menu_bar.add_cascade(
+            label=TEXT_DICT.get('menubar').get('MENUBAR_EDIT_CASCADE'),
+            menu=edit_menu)
 
         # Help Menu
         help_menu = tk.Menu(menu_bar, tearoff=0)
-        help_menu.add_command(label="Documentation",
-                              command=self.display_documentation)
-        help_menu.add_command(label="About", command=self.display_about)
-        menu_bar.add_cascade(label="Help", menu=help_menu)
+        help_menu.add_command(
+            label=TEXT_DICT.get('menubar').get('MENUBAR_DOC'),
+            command=self.display_documentation)
+        help_menu.add_command(
+            label=TEXT_DICT.get('menubar').get('MENUBAR_ABOUT'),
+            command=self.display_about)
+        menu_bar.add_cascade(
+            label=TEXT_DICT.get('menubar').get('MENUBAR_HELP_CASCADE'),
+            menu=help_menu)
 
         self.master.config(menu=menu_bar)
 
@@ -881,17 +1095,6 @@ class App(tk.Frame):
         """Display documentation for menu bar about button."""
         print(LONG_BAR)
         print(DOCUMENTATION)
-        # print('Documentation of %s (Ver. %s):\n' % (GUI_TITLE, __version__))
-        # print('[Basic Usage]')
-        # print('  1. Open Newick tree file')
-        # print('  2. Input calibration configs')
-        # print('  3. Press "Execute All" button to execute\n')
-        # print('[Config Syntax]')
-        # print('  name_a, name_b, calibration_infomation_1')
-        # print('  name_c, name_d, calibration_infomation_2')
-        # print('  name_a, name_b, clade_label_information')
-        # print('  name, branch_label_information')
-        # print('  ..., ..., ...')
         print(LONG_BAR)
 
     def display_about(self):
@@ -905,12 +1108,10 @@ class App(tk.Frame):
         sys.stderr = TextEmit(self.log_area, 'stderr')
 
         print(LONG_BAR)
-        print('  %s (Ver %s)' % (GUI_TITLE, __version__))
-        print(time.strftime("  %d %b %Y,  %a %H:%M:%S",
-                            time.localtime()))
+        print(FORMAT_STR_GUI_TITLE % (GUI_TITLE, __version__))
+        print(time.strftime(FORMAT_STR_TIME, time.localtime()))
         print(LONG_BAR)
-        print('\nIf you need help, please check the menu bar:\n\n'
-              '   Help -> Documentation\n')
+        print(HELP)
 
     def _copy(self):
         # self.master.clipboard_clear()
