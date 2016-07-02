@@ -1,6 +1,6 @@
 NodeFinderGUI
 =============
-[![Build Status](https://travis-ci.org/zxjsdp/NodeFinderGUI.svg?branch=feature%2FContinuous_integration)](https://travis-ci.org/zxjsdp/NodeFinderGUI)
+[![Build Status](https://travis-ci.org/zxjsdp/NodeFinderGUI.svg?branch=feature%2FContinuous_integration)](https://travis-ci.org/zxjsdp/NodeFinderGUI) [![Coverage Status](https://coveralls.io/repos/github/zxjsdp/NodeFinderGUI/badge.svg?branch=master)](https://coveralls.io/github/zxjsdp/NodeFinderGUI?branch=master)
 
 GUI for NodeFinder Program
 
