@@ -9,6 +9,8 @@ Version v0.5.0
 * Bugfix: Right click menu on Mac OSX
 * Bugfix: Check all species names from config lines in Newick tree before execute
 * Bugfix: Remove semicolons in end of config lines
+* Improve: Add tests
+* Improve: Add continous intergration (using Travis CI)
 
 Version v0.4.6
 --------------
