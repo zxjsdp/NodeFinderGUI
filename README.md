@@ -1,5 +1,7 @@
 NodeFinderGUI
 =============
+[![Build Status](https://travis-ci.org/zxjsdp/NodeFinderGUI.svg?branch=feature%2FContinuous_integration)](https://travis-ci.org/zxjsdp/NodeFinderGUI)
+
 GUI for NodeFinder Program
 
 ![NodeFinderGUI Demo](./data/NodeFinderGUI_Demo.gif)
@@ -27,6 +29,8 @@ If the `pyw` file does not work, please try the `nodefinder_gui.py` file. The co
 
 Usage
 -----
+
+NodeFinderGUI supports Python >= `2.7` or Python >= `3.3`.
 
 Unzip NodeFinderGUI.zip, then,
 
