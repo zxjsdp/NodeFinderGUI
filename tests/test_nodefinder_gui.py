@@ -2,22 +2,18 @@
 
 from __future__ import print_function, with_statement
 
-import pytest
-import mock
-
-from nodefinder_gui.nodefinder_gui import (
-    clean_elements,
-    get_clean_tree_str,
-    get_right_index_of_name,
-    get_insertion_list,
-    get_index_of_tmrca,
-    single_calibration,
-    add_single_branch_label,
-    multi_calibration,
-    get_cali_list,
-    get_tree_str,
-    get_species_names_from_tree_str,
-)
+from nodefinder_gui.nodefinder_gui import clean_elements
+from nodefinder_gui.nodefinder_gui import get_clean_tree_str
+from nodefinder_gui.nodefinder_gui import get_right_index_of_name
+from nodefinder_gui.nodefinder_gui import get_insertion_list
+from nodefinder_gui.nodefinder_gui import get_index_of_tmrca
+from nodefinder_gui.nodefinder_gui import single_calibration
+from nodefinder_gui.nodefinder_gui import add_single_branch_label
+from nodefinder_gui.nodefinder_gui import multi_calibration
+from nodefinder_gui.nodefinder_gui import get_cali_list
+from nodefinder_gui.nodefinder_gui import get_tree_str
+from nodefinder_gui.nodefinder_gui import get_species_names_from_tree_str
+from nodefinder_gui.nodefinder_gui import check_all_names_in_newick_tree
 
 
 def test_clean_elements():
@@ -138,7 +134,6 @@ def test_get_tree_str():
 
 
 def test_get_species_names_from_tree_str():
-
     raw_tree_str = '((a ,((b, c), (d, e))), (f, g));'
 
     expected_species_names = ['a', 'b', 'c', 'd', 'e', 'f', 'g']
@@ -149,3 +144,31 @@ def test_get_species_names_from_tree_str():
 
     assert expected_species_names == actual_species_names
     assert expected_species_num == actual_species_num
+
+
+def test_check_all_names_in_newick_tree():
+    raw_tree_str = '((a ,((b, c), (d, e))), (f, g));'
+    cali_tuple_list_with_all_names_in_tree = [
+        ('b', 'c', '>0.1<0.2'),
+        ('a', 'b', '>0.2<0.3'),
+        ('a', 'e', '>0.3<0.4'),
+        ('d', 'f', '>0.6<0.7')
+    ]
+    cali_tuple_list_not_all_names_in_tree = [
+        ('b', 'c', '>0.1<0.2'),
+        ('a', 'h', '>0.2<0.3'),
+        ('a', 'e', '>0.3<0.4'),
+        ('d', 'f', '>0.6<0.7')
+    ]
+
+    expected_true_result = True
+
+    actual_name_checks_1 = check_all_names_in_newick_tree(
+        raw_tree_str, cali_tuple_list_with_all_names_in_tree
+    )
+    assert expected_true_result == actual_name_checks_1
+
+    actual_name_checks_2 = check_all_names_in_newick_tree(
+        raw_tree_str, cali_tuple_list_not_all_names_in_tree
+    )
+    assert expected_true_result != actual_name_checks_2
