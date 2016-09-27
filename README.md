@@ -40,9 +40,9 @@ Unzip NodeFinderGUI.zip, then,
 
 Command Line Version
 --------------------
-[NodeFinderC](https://github.com/zxjsdp/nodefinderc) (recommended), C implementation of NodeFinder.
-
-[NodeFinder](https://github.com/zxjsdp/NodeFinder), Python command line version.
+- [NodeFinderC](https://github.com/zxjsdp/nodefinderc) (recommended), C implementation of NodeFinder.
+- [nodefinder-go](https://github.com/zxjsdp/nodefinder-go) (recommended), Go implementation of NodeFinder.
+- [NodeFinder](https://github.com/zxjsdp/NodeFinder), Python command line version.
 
 
 Simple Usage
